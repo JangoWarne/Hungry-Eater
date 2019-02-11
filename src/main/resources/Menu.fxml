@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.ac.glos.ct5055.assignment.s1609415.ui.MenuController">
+   <children>
+      <AnchorPane prefHeight="80.0" prefWidth="1400.0">
+         <children>
+            <Rectangle arcHeight="5.0" fill="#275168" height="103.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1400.0" />
+            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="507.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hungry Eater" textAlignment="CENTER" wrappingWidth="396.9954528808594">
+               <font>
+                  <Font name="Apple Chancery" size="50.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="920.0" prefWidth="1400.0">
+         <children>
+            <Arc fill="#1f93ff00" layoutX="606.0" layoutY="217.0" length="70.0" radiusX="100.0" radiusY="100.0" startAngle="120.0" stroke="BLACK" strokeType="INSIDE" />
+            <Arc fill="#1f93ff00" layoutX="591.0" layoutY="208.0" length="50.0" radiusX="100.0" radiusY="100.0" startAngle="130.0" stroke="BLACK" strokeType="INSIDE" />
+            <Arc fill="#1f93ff00" layoutX="622.0" layoutY="225.0" length="90.0" radiusX="100.0" radiusY="100.0" startAngle="110.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#831515" layoutX="1184.0" layoutY="436.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#4f8d46" layoutX="648.0" layoutY="235.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+            <Button fx:id="startButton" focusTraversable="false" layoutX="755.0" layoutY="546.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="172.0" text="Start">
+               <font>
+                  <Font name="System Font" size="28.0" />
+               </font>
+            </Button>
+            <HBox layoutX="225.0" layoutY="403.0" spacing="10.0">
+               <children>
+                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="0.5x">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="scaleToggleGroup" />
+                     </toggleGroup>
+                  </ToggleButton>
+                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" selected="true" text="1x" toggleGroup="$scaleToggleGroup">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ToggleButton>
+                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="2x" toggleGroup="$scaleToggleGroup">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ToggleButton>
+                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="4x" toggleGroup="$scaleToggleGroup">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ToggleButton>
+               </children>
+            </HBox>
+            <TextField focusTraversable="false" layoutX="225.0" layoutY="449.0" prefHeight="27.0" prefWidth="50.0" text="100" />
+            <TextField focusTraversable="false" layoutX="225.0" layoutY="492.0" prefHeight="27.0" prefWidth="50.0" text="200" />
+            <ChoiceBox focusTraversable="false" layoutX="225.0" layoutY="535.0" prefHeight="27.0" prefWidth="110.0" />
+            <TextField alignment="CENTER" disable="true" editable="false" focusTraversable="false" layoutX="168.0" layoutY="703.0" mouseTransparent="true" prefHeight="30.0" prefWidth="30.0" text="6">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </TextField>
+            <HBox layoutX="240.0" layoutY="703.0" spacing="40.0">
+               <children>
+                  <TextField alignment="CENTER" focusTraversable="false" layoutX="240.0" layoutY="703.0" prefHeight="30.0" prefWidth="30.0">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" focusTraversable="false" layoutX="312.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </TextField>
+                  <TextField alignment="CENTER" focusTraversable="false" layoutX="387.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+            <TextField alignment="CENTER" disable="true" editable="false" focusTraversable="false" layoutX="454.0" layoutY="704.0" mouseTransparent="true" prefHeight="30.0" prefWidth="30.0" text="1">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </TextField>
+            <Text layoutX="242.0" layoutY="676.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nodes per layer">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Text>
+            <Text layoutX="167.0" layoutY="758.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input" />
+            <Text layoutX="447.0" layoutY="758.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Output" />
+            <Text layoutX="63.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scale Multiplier">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="63.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iterations per Life">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="63.0" layoutY="512.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Population Size">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="64.0" layoutY="553.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hidden Layers">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
