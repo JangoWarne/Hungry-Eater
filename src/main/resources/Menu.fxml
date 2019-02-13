@@ -34,7 +34,7 @@
             </Button>
             <HBox layoutX="225.0" layoutY="403.0" spacing="10.0">
                <children>
-                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="0.5x">
+                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="1/4x">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -42,17 +42,17 @@
                         <ToggleGroup fx:id="scaleToggleGroup" />
                      </toggleGroup>
                   </ToggleButton>
+                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="1/2x" toggleGroup="$scaleToggleGroup">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ToggleButton>
                   <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" selected="true" text="1x" toggleGroup="$scaleToggleGroup">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </ToggleButton>
                   <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="2x" toggleGroup="$scaleToggleGroup">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </ToggleButton>
-                  <ToggleButton focusTraversable="false" mnemonicParsing="false" prefWidth="50.0" text="4x" toggleGroup="$scaleToggleGroup">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -98,12 +98,12 @@
             </Text>
             <Text layoutX="167.0" layoutY="758.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input" />
             <Text layoutX="447.0" layoutY="758.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Output" />
-            <Text layoutX="63.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scale Multiplier">
+            <Text layoutX="63.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size Multiplier">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <Text layoutX="63.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iterations per Life">
+            <Text layoutX="63.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Steps per Life">
                <font>
                   <Font size="18.0" />
                </font>
