@@ -24,15 +24,15 @@ public class Config {
      * @param populationSize This is the number of creatures in the population every generation
      * @param hiddenLayerNodes This is the number of nodes in the hidden layers in every creature's neural network
      */
-    public Config( int sizeMultiplier, int stepsPerLife, int populationSize, ArrayList<Integer> hiddenLayerNodes) {
+    public Config( float sizeMultiplier, int stepsPerLife, int populationSize, ArrayList<Integer> hiddenLayerNodes) {
 
         final int DEFAULT_CREATURE_RADIUS = 24;
         final int DEFAULT_FOOD_RADIUS = 8;
         final int DEFAULT_STEP_LENGTH = 12;
 
-        this.creatureRadius = DEFAULT_CREATURE_RADIUS * sizeMultiplier;
-        this.foodRadius = DEFAULT_FOOD_RADIUS * sizeMultiplier;
-        this.stepLength = DEFAULT_STEP_LENGTH * sizeMultiplier;
+        this.creatureRadius = Math.round( DEFAULT_CREATURE_RADIUS * sizeMultiplier );
+        this.foodRadius = Math.round( DEFAULT_FOOD_RADIUS * sizeMultiplier );
+        this.stepLength = Math.round( DEFAULT_STEP_LENGTH * sizeMultiplier );
         this.stepsPerLife = stepsPerLife;
         this.populationSize = populationSize;
         this.hiddenLayerNodes = hiddenLayerNodes;

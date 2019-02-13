@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
 
 import java.io.IOException;
 
@@ -19,6 +20,9 @@ import java.io.IOException;
  */
 public class SimulationController {
 
+    private Config config;
+    private GenerationResult result = new GenerationResult();
+
     @FXML
     private Region stopRegion;
 
@@ -29,13 +33,8 @@ public class SimulationController {
         stopRegion.setOnMouseClicked(this::backRegionHandle);
     }
 
-    public void setGame() {
-        // Set DrawUI scene
-//        game.getDrawClass().setScene( game, backRegion.getScene(), winTextArea, boardTilePane );
-
-        // Start Game
-//        this.game = game;
-//        game.startGame();
+    public void setConfig( Config config ) {
+        this.config = config;
     }
 
     private void backRegionHandle(MouseEvent event) {
@@ -47,9 +46,10 @@ public class SimulationController {
             Pane pane = (Pane) loader.load();
             scene.setRoot(pane);
 
-            // Add game to controller
-//            PlayersController controller = loader.getController();
-//            controller.setGame( game );
+            // Add config and result data to controller
+            ResultsController controller = loader.getController();
+            controller.setConfig( config );
+            controller.setResult( result );
         } catch (IOException e) {
             e.printStackTrace();
         }

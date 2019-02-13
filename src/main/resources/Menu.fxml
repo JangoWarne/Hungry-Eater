@@ -59,8 +59,8 @@
                   </ToggleButton>
                </children>
             </HBox>
-            <TextField focusTraversable="false" layoutX="225.0" layoutY="449.0" prefHeight="27.0" prefWidth="50.0" text="100" />
-            <TextField focusTraversable="false" layoutX="225.0" layoutY="492.0" prefHeight="27.0" prefWidth="50.0" text="200" />
+            <TextField fx:id="stepsTextField" focusTraversable="false" layoutX="225.0" layoutY="449.0" prefHeight="27.0" prefWidth="50.0" text="100" />
+            <TextField fx:id="populationTextField" focusTraversable="false" layoutX="225.0" layoutY="492.0" prefHeight="27.0" prefWidth="50.0" text="200" />
             <ChoiceBox focusTraversable="false" layoutX="225.0" layoutY="535.0" prefHeight="27.0" prefWidth="110.0" />
             <TextField alignment="CENTER" disable="true" editable="false" focusTraversable="false" layoutX="168.0" layoutY="703.0" mouseTransparent="true" prefHeight="30.0" prefWidth="30.0" text="6">
                <font>
@@ -69,17 +69,17 @@
             </TextField>
             <HBox layoutX="240.0" layoutY="703.0" spacing="40.0">
                <children>
-                  <TextField alignment="CENTER" focusTraversable="false" layoutX="240.0" layoutY="703.0" prefHeight="30.0" prefWidth="30.0">
+                  <TextField fx:id="hidden1TextField" alignment="CENTER" focusTraversable="false" layoutX="240.0" layoutY="703.0" prefHeight="30.0" prefWidth="30.0">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </TextField>
-                  <TextField alignment="CENTER" focusTraversable="false" layoutX="312.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
+                  <TextField fx:id="hidden2TextField" alignment="CENTER" focusTraversable="false" layoutX="312.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </TextField>
-                  <TextField alignment="CENTER" focusTraversable="false" layoutX="387.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
+                  <TextField fx:id="hidden3TextField" alignment="CENTER" focusTraversable="false" layoutX="387.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>

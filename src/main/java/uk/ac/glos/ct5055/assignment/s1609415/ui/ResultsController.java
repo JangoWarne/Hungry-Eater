@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
 
 import java.io.IOException;
 
@@ -28,13 +29,12 @@ public class ResultsController {
         newRegion.setOnMouseClicked(this::backRegionHandle);
     }
 
-    public void setGame() {
-        // Set DrawUI scene
-//        game.getDrawClass().setScene( game, backRegion.getScene(), winTextArea, boardTilePane );
+    public void setConfig(Config config) {
+        // update UI based on config
+    }
 
-        // Start Game
-//        this.game = game;
-//        game.startGame();
+    public void setResult(GenerationResult result) {
+        // update UI based on result
     }
 
     private void backRegionHandle(MouseEvent event) {
