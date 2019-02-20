@@ -1,6 +1,7 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
 import de.jensd.fx.button.JavaFXUtil;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +50,10 @@ public class MenuController {
     }
 
     private void startButtonHandle(ActionEvent event) {
+        // Confirm inputs
+        stepsTextFieldHandle(new ActionEvent());
+        populationTextFieldHandle(new ActionEvent());
+
         // Create configuration object from UI data
         ArrayList<Integer> layers = new ArrayList<>();
         addLayer(layers, getInt(hidden1TextField) );
@@ -62,7 +67,7 @@ public class MenuController {
             // Change Scene
             Scene scene = startButton.getScene();
             FXMLLoader loader = new FXMLLoader( getClass().getResource("/Simulation.fxml" ) );
-            Pane pane = (Pane) loader.load();
+            Pane pane = loader.load();
             scene.setRoot(pane);
 
             // Add config data to controller
@@ -84,7 +89,7 @@ public class MenuController {
 
         // upper warning
         if(getInt(stepsTextField) > 10000) {
-            Alert maxAlert = new Alert(Alert.AlertType.CONFIRMATION, "Values above 10,000 may take too long to complete");
+            Alert maxAlert = new Alert(Alert.AlertType.CONFIRMATION, "Steps values above 10,000 may take too long to complete");
             maxAlert.showAndWait()
                     .filter(response -> response == ButtonType.OK);
         }
@@ -101,7 +106,7 @@ public class MenuController {
 
         // upper warning
         if(getInt(populationTextField) > 10000) {
-            Alert maxAlert = new Alert(Alert.AlertType.CONFIRMATION, "Values above 10,000 may take too long to complete");
+            Alert maxAlert = new Alert(Alert.AlertType.CONFIRMATION, "Population values above 10,000 may take too long to complete");
             maxAlert.showAndWait()
                     .filter(response -> response == ButtonType.OK);
         }
@@ -126,6 +131,11 @@ public class MenuController {
     }
 
     private int getInt(TextField field) {
-        return Integer.parseInt( field.getCharacters().toString() );
+        int number = 0;
+        String text = field.getCharacters().toString();
+        if(!text.equals("")) {
+            number = Integer.parseInt( text );
+        }
+        return number;
     }
 }

@@ -1,11 +1,12 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
+import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
-import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
 
 import java.io.IOException;
 

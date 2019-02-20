@@ -17,6 +17,11 @@ public class Config {
     private int populationSize;
     private ArrayList<Integer> hiddenLayerNodes;
 
+    private int screenYMin;
+    private int screenYMax;
+    private int screenXMin;
+    private int screenXMax;
+
     /**
      * Initialises all values for the object
      * @param sizeMultiplier This is used to scale the creature and food from their default sizes
@@ -30,12 +35,20 @@ public class Config {
         final int DEFAULT_FOOD_RADIUS = 8;
         final int DEFAULT_STEP_LENGTH = 12;
 
+        final int SCREEN_WIDTH = 1400;
+        final int SCREEN_HEIGHT = 687;
+
         this.creatureRadius = Math.round( DEFAULT_CREATURE_RADIUS * sizeMultiplier );
         this.foodRadius = Math.round( DEFAULT_FOOD_RADIUS * sizeMultiplier );
         this.stepLength = Math.round( DEFAULT_STEP_LENGTH * sizeMultiplier );
         this.stepsPerLife = stepsPerLife;
         this.populationSize = populationSize;
         this.hiddenLayerNodes = hiddenLayerNodes;
+
+        this.screenYMin = this.creatureRadius;
+        this.screenYMax = SCREEN_HEIGHT - this.creatureRadius;
+        this.screenXMin = this.creatureRadius;
+        this.screenXMax = SCREEN_WIDTH - this.creatureRadius;
     }
 
     /**
@@ -84,5 +97,21 @@ public class Config {
      */
     public ArrayList<Integer> getHiddenLayerNodes() {
         return hiddenLayerNodes;
+    }
+
+    public int getScreenYMax() {
+        return screenYMax;
+    }
+
+    public int getScreenYMin() {
+        return screenYMin;
+    }
+
+    public int getScreenXMax() {
+        return screenXMax;
+    }
+
+    public int getScreenXMin() {
+        return screenXMin;
     }
 }
