@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
@@ -28,10 +29,13 @@
       </AnchorPane>
       <HBox prefHeight="920.0" prefWidth="1400.0">
          <children>
-            <AnchorPane prefHeight="920.0" prefWidth="1000.0" />
+            <AnchorPane prefHeight="920.0" prefWidth="1000.0">
+               <children>
+                  <ImageView fx:id="networkImageView" fitHeight="700.0" fitWidth="800.0" layoutX="100.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true" />
+               </children></AnchorPane>
             <AnchorPane prefHeight="920.0" prefWidth="400.0">
                <children>
-                  <TableView layoutY="68.0" prefHeight="789.0" prefWidth="359.0">
+                  <TableView focusTraversable="false" layoutY="68.0" prefHeight="789.0" prefWidth="359.0">
                     <columns>
                       <TableColumn prefWidth="115.0" text="Connection" />
                       <TableColumn prefWidth="66.0" text="Weight" />

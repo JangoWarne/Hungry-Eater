@@ -72,13 +72,14 @@ public class SimulationController {
         creatureCircle.setLayoutX(0);
         creatureCircle.setLayoutY(0);
         creatureCircle.setRadius(config.getCreatureRadius());
-        drawCreatureLocation(0,0);
 
         foodCircle.setLayoutX(0);
         foodCircle.setLayoutY(0);
         foodCircle.setRadius(config.getFoodRadius());
-        drawFoodLocation(0.5,0.5);
 
+        //TODO replace this later
+        drawCreatureLocation(config.getScreenXMax()/3.0,config.getScreenYMax()/2.0);
+        drawFoodLocation(0.5,0.5);
         drawSceneVisibility(true);
     }
 
