@@ -23,6 +23,14 @@
     </build>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/guru.nidi/graphviz-java -->
+        <dependency>
+            <groupId>guru.nidi</groupId>
+            <artifactId>graphviz-java</artifactId>
+            <version>0.8.2</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.encog</groupId>
             <artifactId>encog-core</artifactId>
