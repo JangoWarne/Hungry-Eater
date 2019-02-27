@@ -92,10 +92,9 @@ public class SimulationController {
             Pane pane = loader.load();
             scene.setRoot(pane);
 
-            // Add config and result data to controller
+            // Add result data to controller
             ResultsController controller = loader.getController();
-            controller.setConfig( config );
-            controller.setResult( result );
+            controller.drawResult( result );
         } catch (IOException e) {
             e.printStackTrace();
         }

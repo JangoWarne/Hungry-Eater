@@ -35,18 +35,18 @@
                </children></AnchorPane>
             <AnchorPane prefHeight="920.0" prefWidth="400.0">
                <children>
-                  <TableView focusTraversable="false" layoutY="68.0" prefHeight="789.0" prefWidth="359.0">
+                  <Text layoutX="132.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genome">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <TableView fx:id="genomeTableView" focusTraversable="false" layoutY="68.0" prefHeight="789.0" prefWidth="359.0">
                     <columns>
                       <TableColumn prefWidth="115.0" text="Connection" />
                       <TableColumn prefWidth="66.0" text="Weight" />
                         <TableColumn minWidth="7.0" prefWidth="139.0" text="Binary Gene" />
                     </columns>
                   </TableView>
-                  <Text layoutX="132.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genome">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
                </children>
             </AnchorPane>
          </children>
