@@ -1,4 +1,4 @@
-package uk.ac.glos.ct5055.assignment.s1609415.ui;
+package uk.ac.glos.ct5055.assignment.s1609415;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

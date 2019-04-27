@@ -1,6 +1,7 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
 import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
+import uk.ac.glos.ct5055.assignment.s1609415.population.Population;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,6 @@ import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
 
 /**
  * This class is the controller for Simulation.fxml
@@ -30,7 +30,8 @@ public class SimulationController {
     private Config config;
     private XYChart.Series<Number, Number> genBest;
     private XYChart.Series<Number, Number> genMean;
-    private GenerationResult result = new GenerationResult();
+    private Progress progress;
+    private Population population;
 
     @FXML
     private Region stopRegion;
@@ -64,6 +65,13 @@ public class SimulationController {
         historyLineChart.getData().addAll(genMean, genBest);
     }
 
+    public SimulationController() {
+        progress = new Progress(this);
+
+        population = new Population(progress, config);
+        population.startSimulation();
+    }
+
     protected void setConfig( Config config ) {
         this.config = config;
 
@@ -86,6 +94,8 @@ public class SimulationController {
     private void backRegionHandle(MouseEvent event) {
         // Go to the results scene
         try {
+            population.stopSimulation();
+
             // Change Scene
             Scene scene = stopRegion.getScene();
             FXMLLoader loader = new FXMLLoader( getClass().getResource("/Results.fxml" ) );
@@ -94,7 +104,7 @@ public class SimulationController {
 
             // Add result data to controller
             ResultsController controller = loader.getController();
-            controller.drawResult( result );
+            controller.drawResult( progress.getResult() );
         } catch (IOException e) {
             e.printStackTrace();
         }

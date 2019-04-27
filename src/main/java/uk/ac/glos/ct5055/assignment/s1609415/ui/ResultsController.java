@@ -112,12 +112,12 @@ public class ResultsController {
         links6.add( new Pair<>("1_4",0.25) );
         links6.add( new Pair<>("1_5",0.2) );
 
-        ArrayList<Pair<String,Double>> links7 = new ArrayList<>(Arrays.asList( new Pair<>("new_direction",1.0) ));
-        ArrayList<Pair<String,Double>> links8 = new ArrayList<>(Arrays.asList( new Pair<>("new_direction",0.8) ));
-        ArrayList<Pair<String,Double>> links9 = new ArrayList<>(Arrays.asList( new Pair<>("new_direction",0.6) ));
-        ArrayList<Pair<String,Double>> links10 = new ArrayList<>(Arrays.asList( new Pair<>("new_direction",0.4) ));
-        ArrayList<Pair<String,Double>> links11 = new ArrayList<>(Arrays.asList( new Pair<>("new_direction",0.2) ));
-        ArrayList<Pair<String,Double>> links12 = new ArrayList<>(Arrays.asList( new Pair<>("new_direction",0.1) ));
+        ArrayList<Pair<String,Double>> links7 = new ArrayList<>(Arrays.asList( new Pair<>("relative_direction",1.0) ));
+        ArrayList<Pair<String,Double>> links8 = new ArrayList<>(Arrays.asList( new Pair<>("relative_direction",0.8) ));
+        ArrayList<Pair<String,Double>> links9 = new ArrayList<>(Arrays.asList( new Pair<>("relative_direction",0.6) ));
+        ArrayList<Pair<String,Double>> links10 = new ArrayList<>(Arrays.asList( new Pair<>("relative_direction",0.4) ));
+        ArrayList<Pair<String,Double>> links11 = new ArrayList<>(Arrays.asList( new Pair<>("relative_direction",0.2) ));
+        ArrayList<Pair<String,Double>> links12 = new ArrayList<>(Arrays.asList( new Pair<>("relative_direction",0.1) ));
 
         ArrayList<ArrayList< Pair<String,Double> >> links = new ArrayList<>(Arrays.asList(
                 links1, links2, links3, links4, links5, links6, links7, links8, links9, links10, links11, links12));
@@ -137,7 +137,7 @@ public class ResultsController {
                         Color.WHITE.fill()
                 );
 
-        ArrayList<String> input = new ArrayList<>(Arrays.asList("sight_0", "sight_1", "sight_2", "sight_3", "sight_4", "current_dir"));
+        ArrayList<String> input = new ArrayList<>(Arrays.asList("sight_0", "sight_1", "sight_2", "sight_3", "sight_4"));
         ArrayList<String> names = new ArrayList<>();
         names.addAll(input);
         names.addAll(namesIn);

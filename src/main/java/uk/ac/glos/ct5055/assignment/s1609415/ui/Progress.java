@@ -1,6 +1,10 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
+import uk.ac.glos.ct5055.assignment.s1609415.population.Creature;
 import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
+import uk.ac.glos.ct5055.assignment.s1609415.population.Life;
+
+import java.util.ArrayList;
 
 /**
  * This class stores the progress of the generation currently being processed
@@ -15,6 +19,7 @@ public class Progress {
     private final Object lockProgress = new Object();
 
     private SimulationController uiReference;
+    private ArrayList<Life> lives;
     private GenerationResult result;
     private int generation;
     private int progress;
@@ -27,6 +32,7 @@ public class Progress {
         this.uiReference = uiReference;
         this.generation = 0;
         this.progress = 0;
+        this.lives = new ArrayList<>();
     }
 
     /**
@@ -59,15 +65,40 @@ public class Progress {
      * Resets progress for generation
      * Updates values in UI
      */
-    public void incrementGeneration() {
+    public ArrayList<Life> incrementGeneration() {
 
         synchronized (lockProgress) {
             this.generation++;
             this.progress = 0;
 
+            Creature bestCreature = null;
+            double bestResult = Double.MAX_VALUE;
+            double total = 0;
+            double current;
+
+            // Calculate generation statistics
+            for (Life life: lives) {
+                current = life.getResult();
+
+                if (current < bestResult) {
+                    bestResult = current;
+                    bestCreature = life.getCreature();
+                    total = total + current;
+                }
+            }
+
+            this.result.setBestCreature( bestCreature );
+            this.result.setBestResult( bestResult );
+            this.result.setMeanResult( total/lives.size() );
+            ArrayList<Life> completedLives = this.lives;
+
+            this.lives = new ArrayList<>();
+
             // Update UI
             uiReference.drawProgressGeneration(this.generation);
             uiReference.drawProgressValue(this.progress);
+
+            return completedLives;
         }
 
     }
@@ -76,13 +107,26 @@ public class Progress {
      * Increments progress for current generation
      * Updates value in UI
      */
-    public void incrementProgress() {
+    public void incrementProgress(Life life) {
 
         synchronized (lockProgress) {
+            this.lives.add(life);
             this.progress++;
 
             // Update UI
             uiReference.drawProgressValue(this.progress);
         }
+    }
+
+    /**
+     * Returns the progress of the current generation
+     * @return This contains the progress of the current generation
+     */
+    public int getProgress() {
+
+        synchronized (lockCreature) {
+            return this.progress;
+        }
+
     }
 }

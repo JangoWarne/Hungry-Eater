@@ -21,10 +21,6 @@ public class GenerationResult {
         this.bestCreature = bestCreature;
     }
 
-    /**
-     * Returns the best creature from the generation
-     * @return This is the most effective creature in the generation
-     */
     public Creature getBestCreature() {
         return bestCreature;
     }
