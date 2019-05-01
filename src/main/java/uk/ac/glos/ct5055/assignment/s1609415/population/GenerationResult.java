@@ -11,18 +11,22 @@ public class GenerationResult {
     private int generation;
     private double bestResult;
     private double meanResult;
-    private Creature bestCreature;
+    private Life bestLife;
 
     /**
-     * Stores the best creature from the generation
-     * @param bestCreature This is the most effective creature in the generation
+     * Stores the best Life from the generation
+     * @param bestLife This is the Life of the most effective creature in the generation
      */
-    public void setBestCreature(Creature bestCreature) {
-        this.bestCreature = bestCreature;
+    public void setBestLife(Life bestLife) {
+        this.bestLife = bestLife;
     }
 
-    public Creature getBestCreature() {
-        return bestCreature;
+    /**
+     * Returns the best Life from the generation
+     * @return This is the life of the most effective creature in the generation
+     */
+    public Life getBestLife() {
+        return bestLife;
     }
 
     /**

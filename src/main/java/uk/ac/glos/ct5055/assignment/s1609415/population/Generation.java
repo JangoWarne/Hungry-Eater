@@ -58,7 +58,7 @@ public class Generation {
         ArrayList<Life> lives = new ArrayList<>();
         ArrayList<Genome> genomes = new ArrayList<>();
 
-        int genesPerMember = //config.getHiddenLayerNodes()
+        int genesPerMember = ... //config.getHiddenLayerNodes()
 
         if (lastGen != null) {
             for (Life life:lives) {

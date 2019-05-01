@@ -3,6 +3,7 @@ package uk.ac.glos.ct5055.assignment.s1609415.population;
 import javafx.util.Pair;
 import uk.ac.glos.ct5055.assignment.s1609415.ml.Genome;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Config;
+import uk.ac.glos.ct5055.assignment.s1609415.ui.SimulationController;
 
 /**
  * This class calculates the life of a single creature
@@ -63,6 +64,39 @@ public class Life {
         }
 
         calculateResult();
+    }
+
+    public void uiRun( Status status, SimulationController uiReference, int msWait, boolean first ) {
+        this.foodIndex = 0;
+        getNextFood();
+        this.creatureLocation = new Pair<>(0.0, 0.0);
+        int stepsPerLife = config.getStepsPerLife();
+
+        if (first) {
+            // Setup UI
+            uiReference.drawCreatureLocation( creatureLocation );
+            uiReference.drawFoodLocation( foodLocation );
+            uiReference.drawSceneVisibility(true);
+        }
+
+        for (int i = 0; i < stepsPerLife; i++) {
+
+            takeStep( creature.chooseDirection( foodAngle(), foodDistance(), foodRadius ) );
+            checkFood();
+            uiReference.drawCreatureLocation( creatureLocation );
+            uiReference.drawFoodLocation( foodLocation );
+
+            if (status.getRunStatus()) {
+                return;
+            } else {
+                // Slow display for viewing
+                try {
+                    wait(msWait);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }
     }
 
     private void takeStep( double direction ) {

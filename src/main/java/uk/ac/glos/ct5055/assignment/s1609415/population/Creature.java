@@ -23,6 +23,10 @@ public class Creature {
         this.creatureDirection = 0.0;
     }
 
+    protected void reset() {
+        this.creatureDirection = 0.0;
+    }
+
     protected Genome getGenome() {
         return genome;
     }

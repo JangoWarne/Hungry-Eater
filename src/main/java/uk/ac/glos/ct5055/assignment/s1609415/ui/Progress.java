@@ -71,7 +71,7 @@ public class Progress {
             this.generation++;
             this.progress = 0;
 
-            Creature bestCreature = null;
+            Life bestLife = null;
             double bestResult = Double.MAX_VALUE;
             double total = 0;
             double current;
@@ -82,12 +82,12 @@ public class Progress {
 
                 if (current < bestResult) {
                     bestResult = current;
-                    bestCreature = life.getCreature();
+                    bestLife = life;
                     total = total + current;
                 }
             }
 
-            this.result.setBestCreature( bestCreature );
+            this.result.setBestLife( bestLife );
             this.result.setBestResult( bestResult );
             this.result.setMeanResult( total/lives.size() );
             ArrayList<Life> completedLives = this.lives;
@@ -95,8 +95,9 @@ public class Progress {
             this.lives = new ArrayList<>();
 
             // Update UI
-            uiReference.drawProgressGeneration(this.generation);
-            uiReference.drawProgressValue(this.progress);
+            uiReference.drawProgressGeneration( this.generation );
+            uiReference.drawProgressValue( this.progress );
+            uiReference.drawCompletedGen( this.getGeneration(), bestResult, total/lives.size() );
 
             return completedLives;
         }
@@ -126,6 +127,18 @@ public class Progress {
 
         synchronized (lockCreature) {
             return this.progress;
+        }
+
+    }
+
+    /**
+     * Returns the last completed generation
+     * @return This contains most recent completed generation
+     */
+    public int getGeneration() {
+
+        synchronized (lockCreature) {
+            return this.generation;
         }
 
     }

@@ -1,6 +1,5 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
-import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
 import uk.ac.glos.ct5055.assignment.s1609415.population.Population;
 
 import javafx.fxml.FXML;
@@ -69,7 +68,9 @@ public class SimulationController {
         progress = new Progress(this);
 
         population = new Population(progress, config);
-        population.startSimulation();
+        population.startSimulation(this);
+
+        drawSceneVisibility(false);
     }
 
     protected void setConfig( Config config ) {
@@ -84,11 +85,6 @@ public class SimulationController {
         foodCircle.setLayoutX(0);
         foodCircle.setLayoutY(0);
         foodCircle.setRadius(config.getFoodRadius());
-
-        //TODO replace this later
-        drawCreatureLocation(config.getScreenXMax()/3.0,config.getScreenYMax()/2.0);
-        drawFoodLocation(0.5,0.5);
-        drawSceneVisibility(true);
     }
 
     private void backRegionHandle(MouseEvent event) {
@@ -121,27 +117,14 @@ public class SimulationController {
         waitingLabel.setVisible(!visible);
     }
 
-    public Pair<Double, Double> drawCreatureLocation(double xPos, double yPos) {
-        if(xPos < config.getScreenXMin()) {xPos = config.getScreenXMin();}
-        if(xPos > config.getScreenXMax()) {xPos = config.getScreenXMax();}
-
-        if(yPos < config.getScreenYMin()) {yPos = config.getScreenYMin();}
-        if(yPos > config.getScreenYMax()) {yPos = config.getScreenYMax();}
-
-        creatureCircle.setCenterX(xPos);
-        creatureCircle.setCenterY(yPos);
-
-        return new Pair<>(xPos, yPos);
+    public void drawCreatureLocation( Pair<Double, Double> location ) {
+        creatureCircle.setCenterX( location.getKey() );
+        creatureCircle.setCenterY( location.getValue() );
     }
 
-    public Pair<Double, Double> drawFoodLocation(double xPosNormalised, double yPosNormalised) {
-        double xPos = xPosNormalised * (config.getScreenXMax() - config.getScreenXMin()) + config.getScreenXMin();
-        double yPos = yPosNormalised * (config.getScreenYMax() - config.getScreenYMin()) + config.getScreenYMin();
-
-        foodCircle.setCenterX(xPos);
-        foodCircle.setCenterY(yPos);
-
-        return new Pair<>(xPos, yPos);
+    public void drawFoodLocation( Pair<Double, Double> location ) {
+        foodCircle.setCenterX( location.getKey() );
+        foodCircle.setCenterY( location.getValue() );
     }
 
     public void drawCompletedGen(int gen, double best, double mean) {
