@@ -54,7 +54,7 @@ public class Life {
 
         for (int i = 0; i < stepsPerLife; i++) {
 
-            takeStep( creature.chooseStep( foodLocation ) );
+            takeStep( creature.chooseDirection( foodAngle(), foodDistance(), foodRadius ) );
             checkFood();
 
             if (status.getRunStatus()) {
@@ -112,6 +112,45 @@ public class Life {
         double xDistance = Math.abs( creatureLocation.getKey() - foodLocation.getKey() );
         double yDistance = Math.abs( creatureLocation.getValue() - foodLocation.getValue() );
         return Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
+    }
+
+    private double foodAngle() {
+        double xDistance = Math.abs( creatureLocation.getKey() - foodLocation.getKey() );
+        double yDistance = Math.abs( creatureLocation.getValue() - foodLocation.getValue() );
+
+        double theta = Math.toDegrees( Math.atan( yDistance/xDistance ) );
+        double foodAngle;
+
+        // calculate angle of food from creature between -180 & 180
+        if (xDistance > 0) {
+            if (yDistance > 0) {
+                // first quadrant
+                foodAngle = theta;
+            } else if (yDistance < 0) {
+                // second quadrant
+                foodAngle = 180 - theta;
+            } else {
+                foodAngle = 90.0;
+            }
+        } else if (xDistance == 0) {
+            if (yDistance < 0) {
+                foodAngle = 180;
+            } else {
+                foodAngle = 0;
+            }
+        } else {
+            if (yDistance > 0) {
+                // third quadrant
+                foodAngle = -theta;
+            } else if (yDistance < 0) {
+                // fourth quadrant
+                foodAngle = -180 + theta;
+            } else {
+                foodAngle = -90.0;
+            }
+        }
+
+        return foodAngle;
     }
 
     private void getNextFood() {

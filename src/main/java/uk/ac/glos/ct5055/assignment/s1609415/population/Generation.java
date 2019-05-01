@@ -58,13 +58,15 @@ public class Generation {
         ArrayList<Life> lives = new ArrayList<>();
         ArrayList<Genome> genomes = new ArrayList<>();
 
+        int genesPerMember = //config.getHiddenLayerNodes()
+
         if (lastGen != null) {
             for (Life life:lives) {
                 genomes.add(life.getCreature().getGenome());
             }
-            genomes = Genome.breed( genomes, config.getHiddenLayerNodes() );
+            genomes = Genome.nextGeneration( genomes, genesPerMember );
         } else {
-            genomes = Genome.newGenomes( config.getPopulationSize(), config.getHiddenLayerNodes() );
+            genomes = Genome.newGenomes( config.getPopulationSize(), genesPerMember );
         }
 
         for (int i = 0; i < config.getPopulationSize(); i++) {
