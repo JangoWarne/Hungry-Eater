@@ -12,47 +12,29 @@ import java.util.ArrayList;
  * @author  Joshua Walker
  * @version 1.0
  */
-public class Creature implements Cloneable {
+public class Creature {
 
     private NEATNetwork neuralNetwork;
     private double creatureDirection;
-    private double result;
-    private ArrayList<Double> directions;
 
     public Creature( NEATNetwork neuralNetwork ) {
         this.neuralNetwork = neuralNetwork;
-        this.directions = new ArrayList<>();
         this.creatureDirection = 0.0;
     }
 
-    protected double chooseDirection(double foodAngle, double foodDistance, int foodRadius, boolean forUI) {
+    protected double chooseDirection(double foodAngle, double foodDistance, int foodRadius) {
 
-        if (!forUI) {
-            //
-            MLData inputData = new BasicMLData(5);
-            ArrayList<Double> visionCones = calculateSight(foodAngle, foodDistance, foodRadius);
+        //
+        MLData inputData = new BasicMLData(5);
+        ArrayList<Double> visionCones = calculateSight(foodAngle, foodDistance, foodRadius);
 
-            for (int i = 0; i < 5; i++) {
-                inputData.setData(i, visionCones.get(i));
-            }
-
-            updateDirection(this.neuralNetwork.compute(inputData).getData(0) * 360);
-
-            double direction = getCreatureDirection();
-            directions.add(direction);
-
-            return direction;
-
-        } else {
-            //
-            if (!directions.isEmpty()) {
-                //System.out.println(directions.size());
-                return directions.remove(0);
-            } else {
-                System.out.println("empty");
-                return 0;
-            }
+        for (int i = 0; i < 5; i++) {
+            inputData.setData(i, visionCones.get(i));
         }
+
+        updateDirection(this.neuralNetwork.compute(inputData).getData(0) * 360);
+
+        return getCreatureDirection();
     }
 
     private ArrayList<Double> calculateSight(double foodAngle, double foodDistance, int foodRadius) {
@@ -127,27 +109,5 @@ public class Creature implements Cloneable {
         }
 
         this.creatureDirection = newDirection;
-    }
-
-    public void addDirection(double direction) {
-        this.directions.add( direction );
-    }
-
-    protected void setResult(double result) {
-        this.result = result;
-    }
-
-    public double getResult() {
-        return result;
-    }
-
-    @Override
-    public Object clone() {
-        Creature clone = new Creature( this.neuralNetwork );
-        clone.setResult( result );
-        while (!directions.isEmpty()) {
-            clone.addDirection( directions.remove(0) );
-        }
-        return clone;
     }
 }

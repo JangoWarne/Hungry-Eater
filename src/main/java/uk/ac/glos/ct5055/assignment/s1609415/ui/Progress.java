@@ -1,6 +1,7 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
 import javafx.application.Platform;
+import javafx.util.Pair;
 import uk.ac.glos.ct5055.assignment.s1609415.population.Creature;
 import uk.ac.glos.ct5055.assignment.s1609415.population.Food;
 import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
@@ -23,7 +24,7 @@ public class Progress {
     private GenerationResult result;
     private int generation;
     private int progress;
-    private ArrayList<Creature> creatures;
+    private ArrayList<Pair<Double, ArrayList<Double>>> creatures;
     private int populationSize;
 
     /**
@@ -74,14 +75,14 @@ public class Progress {
             this.generation++;
             this.progress = 0;
 
-            Creature bestCreature = null;
+            Pair<Double, ArrayList<Double>> bestCreature = null;
             double bestResult = -1;
             double total = 0;
             double current;
 
             // Calculate generation statistics
-            for (Creature creature: creatures) {
-                current = creature.getResult();
+            for (Pair<Double, ArrayList<Double>> creature: creatures) {
+                current = creature.getKey();
 
                 if (current > bestResult) {
                     bestResult = current;
@@ -115,20 +116,25 @@ public class Progress {
      * Increments progress for current generation
      * Updates value in UI
      */
-    public void incrementProgress(Creature creature) {
+    public void incrementProgress( Pair<Double, ArrayList<Double>> creature) {
 
         synchronized (lockProgress) {
-            this.creatures.add( (Creature) creature.clone() );
+            //this.creatures.add( (Creature) creature.clone() );
+            this.creatures.add( creature );
             this.progress++;
 
             // Update UI
             final int progress = this.progress;
+            int multiple = populationSize / 100;
 
-            Platform.runLater(new Runnable() {
-                @Override public void run() {
-                    uiReference.drawProgressValue( progress );
-                }
-            });
+            if (progress%multiple == 0) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        uiReference.drawProgressValue(progress);
+                    }
+                });
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
+import javafx.application.Platform;
 import javafx.util.Pair;
 import org.encog.ml.MLMethod;
 import org.encog.ml.CalculateScore;
@@ -7,6 +8,8 @@ import org.encog.neural.neat.NEATNetwork;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Config;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Progress;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.SimulationController;
+
+import java.util.ArrayList;
 
 /**
  * This class calculates the life of a single creature
@@ -51,12 +54,14 @@ public class Life implements CalculateScore {
         Creature creature = new Creature( (NEATNetwork)neuralNetwork );
         int foodIndex = 0;
         double nextStep;
+        ArrayList<Double> steps = new ArrayList<>();
         Pair<Double, Double> foodLocation = food.getFood(foodIndex);
         Pair<Double, Double> creatureLocation = centerCreature();
 
         for (int i = 0; i < stepsPerLife; i++) {
 
-            nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius, false );
+            nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius );
+            steps.add(nextStep);
             creatureLocation = takeStep( creatureLocation, nextStep );
             foodIndex = checkFood( creatureLocation, foodLocation, foodIndex );
             foodLocation = food.getFood(foodIndex);
@@ -67,12 +72,11 @@ public class Life implements CalculateScore {
         }
 
         double result = calculateResult( creatureLocation, foodLocation, foodIndex );
-        creature.setResult(result);
-        progress.incrementProgress( creature );
+        progress.incrementProgress( new Pair<>(result, steps) );
 
         // Slow code to smooth ui
         try {
-            Thread.sleep(1);
+            Thread.sleep(5);
         } catch (InterruptedException e) {
             return 0;
         }
@@ -80,42 +84,49 @@ public class Life implements CalculateScore {
         return result;
     }
 
-    public void uiRun( Creature creature, SimulationController uiReference, int msWait, boolean first ) {
-//        int foodIndex = 0;
-//        double nextStep;
-//        Pair<Double, Double> foodLocation = food.getFood(foodIndex);
-//        Pair<Double, Double> creatureLocation = centerCreature();
-//
-//        if (first) {
-//            // Setup UI
-//            uiReference.drawCreatureLocation( creatureLocation );
-//            uiReference.drawFoodLocation( foodLocation );
-//            uiReference.drawSceneVisibility(true);
-//        }
-//
-//        for (int i = 0; i < stepsPerLife; i++) {
-//
-//            nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius, true );
-//            creatureLocation = takeStep( creatureLocation, nextStep );
-//            foodIndex = checkFood( creatureLocation, foodLocation, foodIndex );
-//            foodLocation = food.getFood(foodIndex);
-//
-//            uiReference.drawCreatureLocation( creatureLocation );
-//            uiReference.drawFoodLocation( foodLocation );
-//
-//            if (!status.getRunStatus()) {
-//                return;
-//            } else {
-//                // Slow display for viewing
-//                try {
-//                    Thread.sleep(msWait);
-//                } catch (InterruptedException e) {
-//                    return;
-//                }
-//            }
-//        }
-//
-//        System.out.println(creature.getResult() + " " + calculateResult( creatureLocation, foodLocation, foodIndex ));
+    public void uiRun( Pair<Double, ArrayList<Double>> creature, SimulationController uiReference, int msWait, boolean first ) {
+        int foodIndex = 0;
+        double nextStep;
+        Pair<Double, Double> foodLocation = food.getFood(foodIndex);
+        Pair<Double, Double> creatureLocation = centerCreature();
+        int multiple = stepsPerLife / 200;
+        ArrayList<Double> steps = creature.getValue();
+        boolean alternate = false;
+
+        if (first) {
+            uiReference.drawCreatureLocation( creatureLocation );
+            uiReference.drawFoodLocation( foodLocation );
+            uiReference.drawSceneVisibility(true);
+        }
+
+        for (int i = 0; i < steps.size(); i++) {
+
+            nextStep = steps.get(i);
+            creatureLocation = takeStep( creatureLocation, nextStep );
+            foodIndex = checkFood( creatureLocation, foodLocation, foodIndex );
+            foodLocation = food.getFood(foodIndex);
+
+            if (i%multiple == 0) {
+                uiReference.drawCreatureLocation(creatureLocation);
+                alternate = !alternate;
+                if (alternate) {
+                    uiReference.drawFoodLocation(foodLocation);
+                }
+
+                // Slow display for viewing
+                try {
+                    Thread.sleep(msWait);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+
+            if (!status.getRunStatus()) {
+                return;
+            }
+        }
+
+        System.out.println(creature.getKey() + " " + calculateResult( creatureLocation, foodLocation, foodIndex ));
     }
 
     private Pair<Double, Double> takeStep( Pair<Double, Double> creatureLocation, double direction ) {

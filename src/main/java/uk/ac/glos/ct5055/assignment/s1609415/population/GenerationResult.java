@@ -1,5 +1,9 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+
 /**
  * This class stores the results for a generation
  *
@@ -9,13 +13,13 @@ package uk.ac.glos.ct5055.assignment.s1609415.population;
 public class GenerationResult {
 
     private Food food;
-    private Creature bestCreature;
+    private Pair<Double, ArrayList<Double>> bestCreature;
 
     /**
      * Stores the best Creature from the generation
      * @param bestCreature This is the Creature of the most effective creature in the generation
      */
-    public void setBestCreature(Creature bestCreature) {
+    public void setBestCreature(Pair<Double, ArrayList<Double>> bestCreature) {
         this.bestCreature = bestCreature;
     }
 
@@ -23,7 +27,7 @@ public class GenerationResult {
      * Returns the best Creature from the generation
      * @return This is the creature of the most effective creature in the generation
      */
-    public Creature getBestCreature() {
+    public Pair<Double, ArrayList<Double>> getBestCreature() {
         return bestCreature;
     }
 

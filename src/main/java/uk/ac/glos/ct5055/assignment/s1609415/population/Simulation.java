@@ -1,9 +1,12 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
 import javafx.application.Platform;
+import javafx.util.Pair;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Config;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Progress;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.SimulationController;
+
+import java.util.ArrayList;
 
 /**
  * This class is the main class to simulate an entire population of creatures through many generations
@@ -55,10 +58,10 @@ public class Simulation {
 
                     // Display generation on UI
                     GenerationResult result = progress.getResult();
-                    Creature creature = result.getBestCreature();
+                    Pair<Double, ArrayList<Double>> creature = result.getBestCreature();
                     Food food = result.getFood();
                     Life life = new Life( config, food, progress, status );
-                    life.uiRun( creature, uiReference, 10, first );
+                    life.uiRun( creature, uiReference, 20, first );
                     first = false;
 
                 } else {
