@@ -121,10 +121,10 @@ public class SimulationController {
     }
 
     public void drawCompletedGen(int gen, double best, double mean) {
-        if (gen <= 200 || (gen % 10 == 0)) {
+        //if (gen <= 200 || (gen % 10 == 0)) {
             genBest.getData().add(new XYChart.Data<>(gen, best));
             genMean.getData().add(new XYChart.Data<>(gen, mean));
-        }
+        //}
     }
 
     protected void drawProgressGeneration(int generation) {

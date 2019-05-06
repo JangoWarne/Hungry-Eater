@@ -59,8 +59,8 @@
                   </ToggleButton>
                </children>
             </HBox>
-            <TextField fx:id="stepsTextField" focusTraversable="false" layoutX="225.0" layoutY="449.0" prefHeight="27.0" prefWidth="50.0" text="100" />
-            <TextField fx:id="populationTextField" focusTraversable="false" layoutX="225.0" layoutY="492.0" prefHeight="27.0" prefWidth="50.0" text="2000" />
+            <TextField fx:id="stepsTextField" focusTraversable="false" layoutX="225.0" layoutY="449.0" prefHeight="27.0" prefWidth="50.0" text="1000" />
+            <TextField fx:id="populationTextField" focusTraversable="false" layoutX="225.0" layoutY="492.0" prefHeight="27.0" prefWidth="50.0" text="200" />
             <Text layoutX="63.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size Multiplier">
                <font>
                   <Font size="18.0" />

@@ -17,32 +17,42 @@ public class Creature implements Cloneable {
     private NEATNetwork neuralNetwork;
     private double creatureDirection;
     private double result;
+    private ArrayList<Double> directions;
 
     public Creature( NEATNetwork neuralNetwork ) {
         this.neuralNetwork = neuralNetwork;
-        reset();
-    }
-
-    protected void reset() {
+        this.directions = new ArrayList<>();
         this.creatureDirection = 0.0;
     }
 
-    protected double chooseDirection(double foodAngle, double foodDistance, int foodRadius, boolean test) {
+    protected double chooseDirection(double foodAngle, double foodDistance, int foodRadius, boolean forUI) {
 
-        MLData inputData = new BasicMLData(5);
-        ArrayList<Double> visionCones = calculateSight(foodAngle, foodDistance, foodRadius);
+        if (!forUI) {
+            //
+            MLData inputData = new BasicMLData(5);
+            ArrayList<Double> visionCones = calculateSight(foodAngle, foodDistance, foodRadius);
 
-//        if (test) {
-//            System.out.println( "vision: " + visionCones );
-//        }
+            for (int i = 0; i < 5; i++) {
+                inputData.setData(i, visionCones.get(i));
+            }
 
-        for(int i=0; i<5; i++) {
-            inputData.setData( i, visionCones.get(i) );
+            updateDirection(this.neuralNetwork.compute(inputData).getData(0) * 360);
+
+            double direction = getCreatureDirection();
+            directions.add(direction);
+
+            return direction;
+
+        } else {
+            //
+            if (!directions.isEmpty()) {
+                //System.out.println(directions.size());
+                return directions.remove(0);
+            } else {
+                System.out.println("empty");
+                return 0;
+            }
         }
-
-        updateDirection( this.neuralNetwork.compute( inputData ).getData(0), test );
-
-        return getCreatureDirection();
     }
 
     private ArrayList<Double> calculateSight(double foodAngle, double foodDistance, int foodRadius) {
@@ -104,13 +114,9 @@ public class Creature implements Cloneable {
         return creatureDirection;
     }
 
-    private void updateDirection(double chosenStep, boolean test) {
+    private void updateDirection(double chosenStep) {
 
         double newDirection = getCreatureDirection() + chosenStep;
-
-//        if (test) {
-//            System.out.println("direction: " + newDirection + " from: " + getCreatureDirection() + " + " + chosenStep);
-//        }
 
         // Wrap direction to between -180 & 180
         while (newDirection <= -180) {
@@ -121,6 +127,10 @@ public class Creature implements Cloneable {
         }
 
         this.creatureDirection = newDirection;
+    }
+
+    public void addDirection(double direction) {
+        this.directions.add( direction );
     }
 
     protected void setResult(double result) {
@@ -135,6 +145,9 @@ public class Creature implements Cloneable {
     public Object clone() {
         Creature clone = new Creature( this.neuralNetwork );
         clone.setResult( result );
+        while (!directions.isEmpty()) {
+            clone.addDirection( directions.remove(0) );
+        }
         return clone;
     }
 }

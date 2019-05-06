@@ -66,6 +66,8 @@ public class Life implements CalculateScore {
             }
         }
 
+        double result = calculateResult( creatureLocation, foodLocation, foodIndex );
+        creature.setResult(result);
         progress.incrementProgress( creature );
 
         // Slow code to smooth ui
@@ -75,47 +77,45 @@ public class Life implements CalculateScore {
             return 0;
         }
 
-        double result = calculateResult( creatureLocation, foodLocation, foodIndex );
-        creature.setResult(result);
-
         return result;
     }
 
     public void uiRun( Creature creature, SimulationController uiReference, int msWait, boolean first ) {
-        int foodIndex = 0;
-        double nextStep;
-        Pair<Double, Double> foodLocation = food.getFood(foodIndex);
-        Pair<Double, Double> creatureLocation = centerCreature();
-        creature.reset();
-
-        if (first) {
-            // Setup UI
-            uiReference.drawCreatureLocation( creatureLocation );
-            uiReference.drawFoodLocation( foodLocation );
-            uiReference.drawSceneVisibility(true);
-        }
-
-        for (int i = 0; i < stepsPerLife; i++) {
-
-            nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius, true );
-            creatureLocation = takeStep( creatureLocation, nextStep );
-            foodIndex = checkFood( creatureLocation, foodLocation, foodIndex );
-            foodLocation = food.getFood(foodIndex);
-
-            uiReference.drawCreatureLocation( creatureLocation );
-            uiReference.drawFoodLocation( foodLocation );
-
-            if (!status.getRunStatus()) {
-                return;
-            } else {
-                // Slow display for viewing
-                try {
-                    Thread.sleep(msWait);
-                } catch (InterruptedException e) {
-                    return;
-                }
-            }
-        }
+//        int foodIndex = 0;
+//        double nextStep;
+//        Pair<Double, Double> foodLocation = food.getFood(foodIndex);
+//        Pair<Double, Double> creatureLocation = centerCreature();
+//
+//        if (first) {
+//            // Setup UI
+//            uiReference.drawCreatureLocation( creatureLocation );
+//            uiReference.drawFoodLocation( foodLocation );
+//            uiReference.drawSceneVisibility(true);
+//        }
+//
+//        for (int i = 0; i < stepsPerLife; i++) {
+//
+//            nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius, true );
+//            creatureLocation = takeStep( creatureLocation, nextStep );
+//            foodIndex = checkFood( creatureLocation, foodLocation, foodIndex );
+//            foodLocation = food.getFood(foodIndex);
+//
+//            uiReference.drawCreatureLocation( creatureLocation );
+//            uiReference.drawFoodLocation( foodLocation );
+//
+//            if (!status.getRunStatus()) {
+//                return;
+//            } else {
+//                // Slow display for viewing
+//                try {
+//                    Thread.sleep(msWait);
+//                } catch (InterruptedException e) {
+//                    return;
+//                }
+//            }
+//        }
+//
+//        System.out.println(creature.getResult() + " " + calculateResult( creatureLocation, foodLocation, foodIndex ));
     }
 
     private Pair<Double, Double> takeStep( Pair<Double, Double> creatureLocation, double direction ) {
@@ -142,7 +142,6 @@ public class Life implements CalculateScore {
 
     private int checkFood( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation, int foodIndex ) {
         if ((creatureRadius + foodRadius) >= foodDistance(creatureLocation, foodLocation)) {
-            System.out.println("eat");
             foodIndex +=1;
         }
         return foodIndex;
@@ -159,15 +158,16 @@ public class Life implements CalculateScore {
         double xDistance = Math.abs( lastLocation.getKey() - foodLocation.getKey() );
         double yDistance = Math.abs( lastLocation.getValue() - foodLocation.getValue() );
         double originalDistance = Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
+        double distanceToNext = foodDistance(creatureLocation, foodLocation);
 
-        if (foodIndex>0) {
-            System.out.println("food+ " + (1-(foodDistance(creatureLocation, foodLocation) / originalDistance)) );
-            System.out.println("x: " + xDistance );
-            System.out.println("y: " + yDistance );
-            System.out.println("o: " + originalDistance );
+        double proportionToNext;
+        if (distanceToNext > originalDistance) {
+            proportionToNext = 0;
+        } else {
+            proportionToNext = (originalDistance - distanceToNext) / originalDistance;
         }
 
-        return foodIndex + (1 - (foodDistance(creatureLocation, foodLocation) / originalDistance));
+        return foodIndex + proportionToNext;
     }
 
     private static double foodDistance( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation ) {

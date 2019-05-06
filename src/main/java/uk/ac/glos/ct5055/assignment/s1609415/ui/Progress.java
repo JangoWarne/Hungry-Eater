@@ -75,7 +75,7 @@ public class Progress {
             this.progress = 0;
 
             Creature bestCreature = null;
-            double bestResult = Double.MAX_VALUE;
+            double bestResult = -1;
             double total = 0;
             double current;
 
@@ -83,14 +83,14 @@ public class Progress {
             for (Creature creature: creatures) {
                 current = creature.getResult();
 
-                if (current < bestResult) {
+                if (current > bestResult) {
                     bestResult = current;
                     bestCreature = creature;
-                    total = total + current;
                 }
+                total = total + current;
             }
 
-            double mean = total/this.populationSize;
+            double mean = total/creatures.size();
 
             this.result.setBestCreature( bestCreature );
             this.result.setFood( (Food) food.clone() );

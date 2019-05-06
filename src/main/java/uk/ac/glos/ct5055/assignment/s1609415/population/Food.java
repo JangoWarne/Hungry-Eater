@@ -56,8 +56,9 @@ public class Food implements Cloneable {
     }
 
     private void addLocation() {
-        Double xPos = (this.xPositions.nextDouble() * (config.getScreenXMax() - config.getScreenXMin())) - config.getScreenXMin();
-        Double yPos = (this.yPositions.nextDouble() * (config.getScreenYMax() - config.getScreenYMin())) - config.getScreenYMin();
+        Double xPos = (this.xPositions.nextDouble() * (config.getScreenXMax() - config.getScreenXMin())) + config.getScreenXMin();
+        Double yPos = (this.yPositions.nextDouble() * (config.getScreenYMax() - config.getScreenYMin())) + config.getScreenYMin();
+
         this.locations.add(new Pair<>(xPos, yPos));
     }
 

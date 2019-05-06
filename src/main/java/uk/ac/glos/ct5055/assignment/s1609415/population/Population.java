@@ -1,5 +1,6 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
+import org.encog.engine.network.activation.ActivationFunction;
 import org.encog.ml.ea.train.EvolutionaryAlgorithm;
 import org.encog.neural.neat.NEATPopulation;
 import org.encog.neural.neat.NEATUtil;
@@ -48,6 +49,7 @@ public class Population {
     private EvolutionaryAlgorithm newPopulation() {
         NEATPopulation population = new NEATPopulation( 5, 1, config.getPopulationSize() );
         population.setSurvivalRate( config.getSurvivalRate() );
+        //population.setActivationCycles(1);
         population.reset();
         Life life = new Life( config, food, progress, status );
         EvolutionaryAlgorithm train = NEATUtil.constructNEATTrainer( population, life );
