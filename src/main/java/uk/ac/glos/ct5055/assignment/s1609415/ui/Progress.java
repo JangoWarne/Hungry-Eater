@@ -1,8 +1,9 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
+import javafx.application.Platform;
 import uk.ac.glos.ct5055.assignment.s1609415.population.Creature;
+import uk.ac.glos.ct5055.assignment.s1609415.population.Food;
 import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
-import uk.ac.glos.ct5055.assignment.s1609415.population.Life;
 
 import java.util.ArrayList;
 
@@ -19,33 +20,23 @@ public class Progress {
     private final Object lockProgress = new Object();
 
     private SimulationController uiReference;
-    private ArrayList<Life> lives;
     private GenerationResult result;
     private int generation;
     private int progress;
+    private ArrayList<Creature> creatures;
+    private int populationSize;
 
     /**
      * Initialises the values for the object;
      * @param uiReference This is a reference to the SimulationController UI
      */
-    public Progress( SimulationController uiReference ) {
+    public Progress( SimulationController uiReference, int populationSize ) {
         this.uiReference = uiReference;
         this.generation = 0;
         this.progress = 0;
-        this.lives = new ArrayList<>();
-    }
-
-    /**
-     * Stores results of the finished generation
-     * Outputs statistics about the generation to the UI
-     * @param result This contains the results for the finished generation
-     */
-    public void setGenerationResult(GenerationResult result) {
-
-        synchronized (lockCreature) {
-            this.result = result;
-        }
-
+        this.creatures = new ArrayList<>();
+        this.result = new GenerationResult();
+        this.populationSize = populationSize;
     }
 
     /**
@@ -61,77 +52,6 @@ public class Progress {
     }
 
     /**
-     * Increments the number of the current generation
-     * Resets progress for generation
-     * Updates values in UI
-     */
-    public ArrayList<Life> incrementGeneration() {
-
-        synchronized (lockProgress) {
-            this.generation++;
-            this.progress = 0;
-
-            Life bestLife = null;
-            double bestResult = Double.MAX_VALUE;
-            double total = 0;
-            double current;
-
-            // Calculate generation statistics
-            for (Life life: lives) {
-                current = life.getResult();
-
-                if (current < bestResult) {
-                    bestResult = current;
-                    bestLife = life;
-                    total = total + current;
-                }
-            }
-
-            this.result.setBestLife( bestLife );
-            this.result.setBestResult( bestResult );
-            this.result.setMeanResult( total/lives.size() );
-            ArrayList<Life> completedLives = this.lives;
-
-            this.lives = new ArrayList<>();
-
-            // Update UI
-            uiReference.drawProgressGeneration( this.generation );
-            uiReference.drawProgressValue( this.progress );
-            uiReference.drawCompletedGen( this.getGeneration(), bestResult, total/lives.size() );
-
-            return completedLives;
-        }
-
-    }
-
-    /**
-     * Increments progress for current generation
-     * Updates value in UI
-     */
-    public void incrementProgress(Life life) {
-
-        synchronized (lockProgress) {
-            this.lives.add(life);
-            this.progress++;
-
-            // Update UI
-            uiReference.drawProgressValue(this.progress);
-        }
-    }
-
-    /**
-     * Returns the progress of the current generation
-     * @return This contains the progress of the current generation
-     */
-    public int getProgress() {
-
-        synchronized (lockCreature) {
-            return this.progress;
-        }
-
-    }
-
-    /**
      * Returns the last completed generation
      * @return This contains most recent completed generation
      */
@@ -141,5 +61,74 @@ public class Progress {
             return this.generation;
         }
 
+    }
+
+    /**
+     * Increments the number of the current generation
+     * Resets progress for generation
+     * Updates values in UI
+     */
+    public void incrementGeneration( Food food ) {
+
+        synchronized (lockProgress) {
+            this.generation++;
+            this.progress = 0;
+
+            Creature bestCreature = null;
+            double bestResult = Double.MAX_VALUE;
+            double total = 0;
+            double current;
+
+            // Calculate generation statistics
+            for (Creature creature: creatures) {
+                current = creature.getResult();
+
+                if (current < bestResult) {
+                    bestResult = current;
+                    bestCreature = creature;
+                    total = total + current;
+                }
+            }
+
+            double mean = total/this.populationSize;
+
+            this.result.setBestCreature( bestCreature );
+            this.result.setFood( (Food) food.clone() );
+
+            // Update UI
+            final int gen = getGeneration();
+            final int progress = this.progress;
+            final double best = bestResult;
+
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    uiReference.drawProgressGeneration( gen );
+                    uiReference.drawProgressValue( progress );
+                    uiReference.drawCompletedGen( gen, best, mean );
+                }
+            });
+        }
+
+    }
+
+    /**
+     * Increments progress for current generation
+     * Updates value in UI
+     */
+    public void incrementProgress(Creature creature) {
+
+        synchronized (lockProgress) {
+            this.creatures.add( (Creature) creature.clone() );
+            this.progress++;
+
+            // Update UI
+            final int progress = this.progress;
+
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                    uiReference.drawProgressValue( progress );
+                }
+            });
+        }
     }
 }

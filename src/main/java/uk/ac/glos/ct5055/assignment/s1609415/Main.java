@@ -1,10 +1,13 @@
 package uk.ac.glos.ct5055.assignment.s1609415;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * This class extends application
@@ -23,6 +26,14 @@ public class Main extends Application {
         stage.setResizable(false);
         stage.setScene(new Scene(menuScene, 1400, 1000));
         stage.show();
+
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
 

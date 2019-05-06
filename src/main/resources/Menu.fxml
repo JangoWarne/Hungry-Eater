@@ -60,44 +60,7 @@
                </children>
             </HBox>
             <TextField fx:id="stepsTextField" focusTraversable="false" layoutX="225.0" layoutY="449.0" prefHeight="27.0" prefWidth="50.0" text="100" />
-            <TextField fx:id="populationTextField" focusTraversable="false" layoutX="225.0" layoutY="492.0" prefHeight="27.0" prefWidth="50.0" text="200" />
-            <ChoiceBox focusTraversable="false" layoutX="225.0" layoutY="535.0" prefHeight="27.0" prefWidth="110.0" />
-            <TextField alignment="CENTER" disable="true" editable="false" focusTraversable="false" layoutX="168.0" layoutY="703.0" mouseTransparent="true" prefHeight="30.0" prefWidth="30.0" text="6">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </TextField>
-            <HBox layoutX="240.0" layoutY="703.0" spacing="40.0">
-               <children>
-                  <TextField fx:id="hidden1TextField" alignment="CENTER" focusTraversable="false" layoutX="240.0" layoutY="703.0" prefHeight="30.0" prefWidth="30.0">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="hidden2TextField" alignment="CENTER" focusTraversable="false" layoutX="312.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="hidden3TextField" alignment="CENTER" focusTraversable="false" layoutX="387.0" layoutY="704.0" prefHeight="30.0" prefWidth="30.0">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </TextField>
-               </children>
-            </HBox>
-            <TextField alignment="CENTER" disable="true" editable="false" focusTraversable="false" layoutX="454.0" layoutY="704.0" mouseTransparent="true" prefHeight="30.0" prefWidth="30.0" text="1">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </TextField>
-            <Text layoutX="242.0" layoutY="676.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nodes per layer">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Text>
-            <Text layoutX="167.0" layoutY="758.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Input" />
-            <Text layoutX="447.0" layoutY="758.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Output" />
+            <TextField fx:id="populationTextField" focusTraversable="false" layoutX="225.0" layoutY="492.0" prefHeight="27.0" prefWidth="50.0" text="2000" />
             <Text layoutX="63.0" layoutY="424.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size Multiplier">
                <font>
                   <Font size="18.0" />
@@ -113,11 +76,12 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <Text layoutX="64.0" layoutY="553.0" strokeType="OUTSIDE" strokeWidth="0.0" text="...">
+            <Text layoutX="64.0" layoutY="553.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Survival Rate">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
+            <TextField fx:id="survivalRateTextField" focusTraversable="false" layoutX="225.0" layoutY="533.0" prefHeight="27.0" prefWidth="50.0" />
          </children>
       </AnchorPane>
    </children>

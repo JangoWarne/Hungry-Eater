@@ -8,72 +8,38 @@ package uk.ac.glos.ct5055.assignment.s1609415.population;
  */
 public class GenerationResult {
 
-    private int generation;
-    private double bestResult;
-    private double meanResult;
-    private Life bestLife;
+    private Food food;
+    private Creature bestCreature;
 
     /**
-     * Stores the best Life from the generation
-     * @param bestLife This is the Life of the most effective creature in the generation
+     * Stores the best Creature from the generation
+     * @param bestCreature This is the Creature of the most effective creature in the generation
      */
-    public void setBestLife(Life bestLife) {
-        this.bestLife = bestLife;
+    public void setBestCreature(Creature bestCreature) {
+        this.bestCreature = bestCreature;
     }
 
     /**
-     * Returns the best Life from the generation
-     * @return This is the life of the most effective creature in the generation
+     * Returns the best Creature from the generation
+     * @return This is the creature of the most effective creature in the generation
      */
-    public Life getBestLife() {
-        return bestLife;
+    public Creature getBestCreature() {
+        return bestCreature;
     }
 
     /**
-     * Stores the largest amount of food eaten
-     * @param bestResult This is the most food any creature in the generation ate
+     * Stores the food positions for creatures in the generation
+     * @param food This is the food positions
      */
-    public void setBestResult(double bestResult) {
-        this.bestResult = bestResult;
+    public void setFood(Food food) {
+        this.food = food;
     }
 
     /**
-     * Returns the largest amount of food eaten
-     * @return This is the most food any creature in the generation ate
+     * Returns the food position information used for this Generation
+     * @return This is the food positions
      */
-    public double getBestResult() {
-        return bestResult;
-    }
-
-    /**
-     * Stores the mean amount of food eaten
-     * @param meanResult This is the mean amount food the creatures in the generation ate
-     */
-    public void setMeanResult(double meanResult) {
-        this.meanResult = meanResult;
-    }
-
-    /**
-     * Returns the mean amount of food eaten
-     * @return This is the mean amount food the creatures in the generation ate
-     */
-    public double getMeanResult() {
-        return meanResult;
-    }
-
-    /**
-     * Stores the value of the recorded generation
-     * @param generation This is the value of the recorded generation
-     */
-    public void setGeneration(int generation) {
-        this.generation = generation;
-    }
-
-    /**
-     * Returns the value of the recorded generation
-     * @return This is the value of the recorded generation
-     */
-    public int getGeneration() {
-        return generation;
+    public Food getFood() {
+        return food;
     }
 }

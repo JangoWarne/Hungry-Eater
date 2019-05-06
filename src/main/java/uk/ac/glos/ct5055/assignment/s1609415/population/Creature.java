@@ -1,7 +1,8 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
-import uk.ac.glos.ct5055.assignment.s1609415.ml.Brain;
-import uk.ac.glos.ct5055.assignment.s1609415.ml.Genome;
+import org.encog.ml.data.MLData;
+import org.encog.ml.data.basic.BasicMLData;
+import org.encog.neural.neat.NEATNetwork;
 
 import java.util.ArrayList;
 
@@ -11,29 +12,35 @@ import java.util.ArrayList;
  * @author  Joshua Walker
  * @version 1.0
  */
-public class Creature {
+public class Creature implements Cloneable {
 
+    private NEATNetwork neuralNetwork;
     private double creatureDirection;
-    private Brain brain;
-    private Genome genome;
+    private double result;
 
-    public Creature(Genome genome, ArrayList<Integer> hiddenLayerNodes) {
-        this.genome = genome;
-        this.brain = new Brain(genome.getGenes(), hiddenLayerNodes);
-        this.creatureDirection = 0.0;
+    public Creature( NEATNetwork neuralNetwork ) {
+        this.neuralNetwork = neuralNetwork;
+        reset();
     }
 
     protected void reset() {
         this.creatureDirection = 0.0;
     }
 
-    protected Genome getGenome() {
-        return genome;
-    }
+    protected double chooseDirection(double foodAngle, double foodDistance, int foodRadius, boolean test) {
 
-    protected double chooseDirection(double foodAngle, double foodDistance, int foodRadius) {
+        MLData inputData = new BasicMLData(5);
+        ArrayList<Double> visionCones = calculateSight(foodAngle, foodDistance, foodRadius);
 
-        updateDirection( brain.chooseStep( calculateSight(foodAngle, foodDistance, foodRadius) ) );
+//        if (test) {
+//            System.out.println( "vision: " + visionCones );
+//        }
+
+        for(int i=0; i<5; i++) {
+            inputData.setData( i, visionCones.get(i) );
+        }
+
+        updateDirection( this.neuralNetwork.compute( inputData ).getData(0), test );
 
         return getCreatureDirection();
     }
@@ -97,9 +104,13 @@ public class Creature {
         return creatureDirection;
     }
 
-    private void updateDirection(double chosenStep) {
+    private void updateDirection(double chosenStep, boolean test) {
 
         double newDirection = getCreatureDirection() + chosenStep;
+
+//        if (test) {
+//            System.out.println("direction: " + newDirection + " from: " + getCreatureDirection() + " + " + chosenStep);
+//        }
 
         // Wrap direction to between -180 & 180
         while (newDirection <= -180) {
@@ -110,5 +121,20 @@ public class Creature {
         }
 
         this.creatureDirection = newDirection;
+    }
+
+    protected void setResult(double result) {
+        this.result = result;
+    }
+
+    public double getResult() {
+        return result;
+    }
+
+    @Override
+    public Object clone() {
+        Creature clone = new Creature( this.neuralNetwork );
+        clone.setResult( result );
+        return clone;
     }
 }

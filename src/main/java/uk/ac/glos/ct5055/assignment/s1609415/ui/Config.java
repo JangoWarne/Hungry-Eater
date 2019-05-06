@@ -1,7 +1,5 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
-import java.util.ArrayList;
-
 /**
  * This class stores the user defined settings from Menu.fxml
  *
@@ -15,7 +13,7 @@ public class Config {
     private int stepLength;
     private int stepsPerLife;
     private int populationSize;
-    private ArrayList<Integer> hiddenLayerNodes;
+    private double survivalRate;
 
     private int screenYMin;
     private int screenYMax;
@@ -27,9 +25,8 @@ public class Config {
      * @param sizeMultiplier This is used to scale the creature and food from their default sizes
      * @param stepsPerLife This is the number of steps each creature can take in a life
      * @param populationSize This is the number of creatures in the population every generation
-     * @param hiddenLayerNodes This is the number of nodes in the hidden layers in every creature's neural network
      */
-    public Config( float sizeMultiplier, int stepsPerLife, int populationSize, ArrayList<Integer> hiddenLayerNodes) {
+    public Config( float sizeMultiplier, int stepsPerLife, int populationSize, double survivalRate) {
 
         final int DEFAULT_CREATURE_RADIUS = 24;
         final int DEFAULT_FOOD_RADIUS = 8;
@@ -43,7 +40,7 @@ public class Config {
         this.stepLength = Math.round( DEFAULT_STEP_LENGTH * sizeMultiplier );
         this.stepsPerLife = stepsPerLife;
         this.populationSize = populationSize;
-        this.hiddenLayerNodes = hiddenLayerNodes;
+        this.survivalRate = survivalRate;
 
         this.screenYMin = this.creatureRadius;
         this.screenYMax = SCREEN_HEIGHT - this.creatureRadius;
@@ -91,12 +88,8 @@ public class Config {
         return populationSize;
     }
 
-    /**
-     * Returns the number of nodes in the hidden layers in every creature's neural network
-     * @return This is an list of the number of nodes per hidden layer
-     */
-    public ArrayList<Integer> getHiddenLayerNodes() {
-        return hiddenLayerNodes;
+    public double getSurvivalRate() {
+        return survivalRate;
     }
 
     public int getScreenYMax() {

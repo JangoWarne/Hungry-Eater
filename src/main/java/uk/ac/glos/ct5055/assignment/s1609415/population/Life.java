@@ -1,8 +1,11 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
 import javafx.util.Pair;
-import uk.ac.glos.ct5055.assignment.s1609415.ml.Genome;
+import org.encog.ml.MLMethod;
+import org.encog.ml.CalculateScore;
+import org.encog.neural.neat.NEATNetwork;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Config;
+import uk.ac.glos.ct5055.assignment.s1609415.ui.Progress;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.SimulationController;
 
 /**
@@ -11,18 +14,14 @@ import uk.ac.glos.ct5055.assignment.s1609415.ui.SimulationController;
  * @author  Joshua Walker
  * @version 1.0
  */
-public class Life {
+public class Life implements CalculateScore {
 
-    private Config config;
+    private Progress progress;
+    private Status status;
     private Food food;
-    private Creature creature;
-    private double result;
 
-    private Pair<Double, Double> foodLocation;
-    private Pair<Double, Double> creatureLocation;
-    private int foodIndex;
-
-    private int creatureRadius ;
+    private int stepsPerLife;
+    private int creatureRadius;
     private int foodRadius;
     private int stepLength;
 
@@ -31,15 +30,12 @@ public class Life {
     private int screenXMin;
     private int screenXMax;
 
-    public Life(Config config, Food food, Genome genome) {
-        this.config = config;
+    public Life(Config config, Food food, Progress progress, Status status) {
+        this.progress = progress;
+        this.status = status;
         this.food = food;
-        this.creature = new Creature( genome, config.getHiddenLayerNodes() );
 
-        this.foodIndex = 0;
-        getNextFood();
-        this.creatureLocation = new Pair<>(0.0, 0.0);
-
+        this.stepsPerLife = config.getStepsPerLife();
         this.creatureRadius = config.getCreatureRadius();
         this.foodRadius = config.getFoodRadius();
         this.stepLength = config.getStepLength();
@@ -50,27 +46,47 @@ public class Life {
         this.screenXMax = config.getScreenXMax();
     }
 
-    public void run( Status status ) {
-        int stepsPerLife = config.getStepsPerLife();
+    @Override
+    public double calculateScore( MLMethod neuralNetwork ) {
+        Creature creature = new Creature( (NEATNetwork)neuralNetwork );
+        int foodIndex = 0;
+        double nextStep;
+        Pair<Double, Double> foodLocation = food.getFood(foodIndex);
+        Pair<Double, Double> creatureLocation = centerCreature();
 
         for (int i = 0; i < stepsPerLife; i++) {
 
-            takeStep( creature.chooseDirection( foodAngle(), foodDistance(), foodRadius ) );
-            checkFood();
+            nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius, false );
+            creatureLocation = takeStep( creatureLocation, nextStep );
+            foodIndex = checkFood( creatureLocation, foodLocation, foodIndex );
+            foodLocation = food.getFood(foodIndex);
 
-            if (status.getRunStatus()) {
-                return;
+            if (!status.getRunStatus()) {
+                return 0;
             }
         }
 
-        calculateResult();
+        progress.incrementProgress( creature );
+
+        // Slow code to smooth ui
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            return 0;
+        }
+
+        double result = calculateResult( creatureLocation, foodLocation, foodIndex );
+        creature.setResult(result);
+
+        return result;
     }
 
-    public void uiRun( Status status, SimulationController uiReference, int msWait, boolean first ) {
-        this.foodIndex = 0;
-        getNextFood();
-        this.creatureLocation = new Pair<>(0.0, 0.0);
-        int stepsPerLife = config.getStepsPerLife();
+    public void uiRun( Creature creature, SimulationController uiReference, int msWait, boolean first ) {
+        int foodIndex = 0;
+        double nextStep;
+        Pair<Double, Double> foodLocation = food.getFood(foodIndex);
+        Pair<Double, Double> creatureLocation = centerCreature();
+        creature.reset();
 
         if (first) {
             // Setup UI
@@ -81,17 +97,20 @@ public class Life {
 
         for (int i = 0; i < stepsPerLife; i++) {
 
-            takeStep( creature.chooseDirection( foodAngle(), foodDistance(), foodRadius ) );
-            checkFood();
+            nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius, true );
+            creatureLocation = takeStep( creatureLocation, nextStep );
+            foodIndex = checkFood( creatureLocation, foodLocation, foodIndex );
+            foodLocation = food.getFood(foodIndex);
+
             uiReference.drawCreatureLocation( creatureLocation );
             uiReference.drawFoodLocation( foodLocation );
 
-            if (status.getRunStatus()) {
+            if (!status.getRunStatus()) {
                 return;
             } else {
                 // Slow display for viewing
                 try {
-                    wait(msWait);
+                    Thread.sleep(msWait);
                 } catch (InterruptedException e) {
                     return;
                 }
@@ -99,7 +118,7 @@ public class Life {
         }
     }
 
-    private void takeStep( double direction ) {
+    private Pair<Double, Double> takeStep( Pair<Double, Double> creatureLocation, double direction ) {
         double xPos = creatureLocation.getKey();
         double yPos = creatureLocation.getValue();
 
@@ -118,16 +137,18 @@ public class Life {
             yPos = screenYMin;
         }
 
-        creatureLocation = new Pair<>(xPos, yPos);
+        return new Pair<>(xPos, yPos);
     }
 
-    private void checkFood() {
-        if ((creatureRadius + foodRadius) >= foodDistance()) {
-            getNextFood();
+    private int checkFood( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation, int foodIndex ) {
+        if ((creatureRadius + foodRadius) >= foodDistance(creatureLocation, foodLocation)) {
+            System.out.println("eat");
+            foodIndex +=1;
         }
+        return foodIndex;
     }
 
-    private void calculateResult() {
+    private double calculateResult( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation, int foodIndex ) {
         Pair<Double, Double> lastLocation;
         if (foodIndex > 0) {
             lastLocation = food.getFood(foodIndex - 1);
@@ -139,16 +160,23 @@ public class Life {
         double yDistance = Math.abs( lastLocation.getValue() - foodLocation.getValue() );
         double originalDistance = Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
 
-        result = foodIndex + (1 - (foodDistance() / originalDistance));
+        if (foodIndex>0) {
+            System.out.println("food+ " + (1-(foodDistance(creatureLocation, foodLocation) / originalDistance)) );
+            System.out.println("x: " + xDistance );
+            System.out.println("y: " + yDistance );
+            System.out.println("o: " + originalDistance );
+        }
+
+        return foodIndex + (1 - (foodDistance(creatureLocation, foodLocation) / originalDistance));
     }
 
-    private double foodDistance() {
+    private static double foodDistance( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation ) {
         double xDistance = Math.abs( creatureLocation.getKey() - foodLocation.getKey() );
         double yDistance = Math.abs( creatureLocation.getValue() - foodLocation.getValue() );
         return Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
     }
 
-    private double foodAngle() {
+    private static double foodAngle( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation ) {
         double xDistance = Math.abs( creatureLocation.getKey() - foodLocation.getKey() );
         double yDistance = Math.abs( creatureLocation.getValue() - foodLocation.getValue() );
 
@@ -187,15 +215,18 @@ public class Life {
         return foodAngle;
     }
 
-    private void getNextFood() {
-        foodLocation = food.getFood(foodIndex);
+    private Pair<Double, Double> centerCreature() {
+        return new Pair<>( (double)((screenXMax-screenXMin)/2 + screenXMin), (double)((screenYMax-screenYMin)/2 + screenYMin) );
     }
 
-    public double getResult() {
-        return result;
+
+    @Override
+    public boolean shouldMinimize() {
+        return false;
     }
 
-    public Creature getCreature() {
-        return creature;
+    @Override
+    public boolean requireSingleThreaded() {
+        return false;
     }
 }

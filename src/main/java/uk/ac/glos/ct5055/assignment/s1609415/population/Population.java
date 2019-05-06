@@ -1,13 +1,14 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
-import javafx.util.Pair;
+import org.encog.ml.ea.train.EvolutionaryAlgorithm;
+import org.encog.neural.neat.NEATPopulation;
+import org.encog.neural.neat.NEATUtil;
+import org.encog.neural.neat.training.species.OriginalNEATSpeciation;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Config;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Progress;
-import uk.ac.glos.ct5055.assignment.s1609415.ui.SimulationController;
 
 /**
- * This class is the main class to process/optimise an entire population of creatures through many generations
- * it runs in a separate processor thread
+ * This class processes a generation of creatures
  *
  * @author  Joshua Walker
  * @version 1.0
@@ -17,59 +18,41 @@ public class Population {
     private Status status;
     private Progress progress;
     private Config config;
+    private Food food;
 
-    public Population(Progress progress, Config config) {
-        status = new Status();
+    public Population(Status status, Progress progress, Config config) {
+        this.status = status;
         this.progress = progress;
         this.config = config;
     }
 
-    public void startSimulation( SimulationController uiReference ) {
-        status = new Status();
+    protected void start() {
+        food = new Food(config);
+        EvolutionaryAlgorithm train = newPopulation();
 
-        // Run background simulation of creatures
-        Thread simulationThread = new Thread(() -> {
-            boolean first = true;
+        while (status.getRunStatus()) {
+            train.iteration();
+            progress.incrementGeneration( food );
 
-            while (status.getRunStatus()) {
-                new Generation(status, progress, config).start( first );
-                first = false;
+            // Slow code to smooth ui
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                return;
             }
-        });
-        simulationThread.start();
 
-
-        // Display best of generation on UI
-        Thread displayThread = new Thread(() -> {
-
-            int displayGen = 0;
-            boolean first = true;
-            while (status.getRunStatus()) {
-
-                // Wait for new completed generation
-                if (progress.getGeneration() > displayGen) {
-
-                    uiReference.drawVisibleGen( displayGen );
-                    displayGen = progress.getGeneration();
-
-                    // Display generation on UI
-                    progress.getResult().getBestLife().uiRun( status, uiReference, 100, first );
-                    first = false;
-
-                } else {
-                    try {
-                        wait(500);
-                    } catch (InterruptedException e) {
-                        return;
-                    }
-                }
-
-            }
-        });
-        displayThread.start();
+            food = new Food(config);
+        }
     }
 
-    public void stopSimulation() {
-        status.stopSimulation();
+    private EvolutionaryAlgorithm newPopulation() {
+        NEATPopulation population = new NEATPopulation( 5, 1, config.getPopulationSize() );
+        population.setSurvivalRate( config.getSurvivalRate() );
+        population.reset();
+        Life life = new Life( config, food, progress, status );
+        EvolutionaryAlgorithm train = NEATUtil.constructNEATTrainer( population, life );
+        train.setSpeciation( new OriginalNEATSpeciation() );
+
+        return train;
     }
 }

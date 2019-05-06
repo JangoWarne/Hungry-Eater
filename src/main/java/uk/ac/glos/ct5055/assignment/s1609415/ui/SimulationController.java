@@ -1,6 +1,8 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
-import uk.ac.glos.ct5055.assignment.s1609415.population.Population;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import uk.ac.glos.ct5055.assignment.s1609415.population.Simulation;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +11,10 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
+import uk.ac.glos.ct5055.assignment.s1609415.population.Status;
 
 import java.io.IOException;
 
@@ -26,11 +28,9 @@ import java.io.IOException;
  */
 public class SimulationController {
 
-    private Config config;
+    private Status status;
     private XYChart.Series<Number, Number> genBest;
     private XYChart.Series<Number, Number> genMean;
-    private Progress progress;
-    private Population population;
 
     @FXML
     private Region stopRegion;
@@ -65,17 +65,10 @@ public class SimulationController {
     }
 
     public SimulationController() {
-        progress = new Progress(this);
-
-        population = new Population(progress, config);
-        population.startSimulation(this);
-
-        drawSceneVisibility(false);
+        status = new Status();
     }
 
     protected void setConfig( Config config ) {
-        this.config = config;
-
         drawPopulationSize(config.getPopulationSize());
 
         creatureCircle.setLayoutX(0);
@@ -85,22 +78,22 @@ public class SimulationController {
         foodCircle.setLayoutX(0);
         foodCircle.setLayoutY(0);
         foodCircle.setRadius(config.getFoodRadius());
+
+        Progress progress = new Progress(this, config.getPopulationSize() );
+
+        drawSceneVisibility(false);
+
+        Simulation simulation = new Simulation(progress, config);
+        simulation.startSimulation( this, status );
+
     }
 
     private void backRegionHandle(MouseEvent event) {
-        // Go to the results scene
+        // Go back to main menu
         try {
-            population.stopSimulation();
-
-            // Change Scene
+            status.stopSimulation();
             Scene scene = stopRegion.getScene();
-            FXMLLoader loader = new FXMLLoader( getClass().getResource("/Results.fxml" ) );
-            Pane pane = loader.load();
-            scene.setRoot(pane);
-
-            // Add result data to controller
-            ResultsController controller = loader.getController();
-            controller.drawResult( progress.getResult() );
+            scene.setRoot(FXMLLoader.load(getClass().getResource("/Menu.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,8 +121,10 @@ public class SimulationController {
     }
 
     public void drawCompletedGen(int gen, double best, double mean) {
-        genBest.getData().add(new XYChart.Data<>(gen, best));
-        genMean.getData().add(new XYChart.Data<>(gen, mean));
+        if (gen <= 200 || (gen % 10 == 0)) {
+            genBest.getData().add(new XYChart.Data<>(gen, best));
+            genMean.getData().add(new XYChart.Data<>(gen, mean));
+        }
     }
 
     protected void drawProgressGeneration(int generation) {

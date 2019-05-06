@@ -8,9 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import org.encog.neural.neat.NEATPopulation;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * This class is the controller for Menu.fxml
@@ -31,11 +31,7 @@ public class MenuController {
     @FXML
     private TextField populationTextField;
     @FXML
-    private TextField hidden1TextField;
-    @FXML
-    private TextField hidden2TextField;
-    @FXML
-    private TextField hidden3TextField;
+    private TextField survivalRateTextField;
 
 
     @FXML
@@ -44,6 +40,9 @@ public class MenuController {
         startButton.setOnAction(this::startButtonHandle);
         stepsTextField.setOnAction(this::stepsTextFieldHandle);
         populationTextField.setOnAction(this::populationTextFieldHandle);
+        survivalRateTextField.setOnAction(this::survivalRateTextFieldHandle);
+
+        survivalRateTextField.setText( Double.toString(NEATPopulation.DEFAULT_SURVIVAL_RATE) );
 
         // Ensure that one button is always selected
         JavaFXUtil.get().addAlwaysOneSelectedSupport(scaleToggleGroup);
@@ -51,36 +50,37 @@ public class MenuController {
 
     private void startButtonHandle(ActionEvent event) {
         // Confirm inputs
-        stepsTextFieldHandle(new ActionEvent());
-        populationTextFieldHandle(new ActionEvent());
+        boolean valid1 = stepsTextFieldHandle(new ActionEvent());
+        boolean valid2 = populationTextFieldHandle(new ActionEvent());
+        boolean valid3 = survivalRateTextFieldHandle(new ActionEvent());
 
-        // Create configuration object from UI data
-        ArrayList<Integer> layers = new ArrayList<>();
-        addLayer(layers, getInt(hidden1TextField) );
-        addLayer(layers, getInt(hidden2TextField) );
-        addLayer(layers, getInt(hidden3TextField) );
+        if (valid1 && valid2 && valid3) {
+            // Create configuration object from UI data
+            Config config = new Config(getMultiplier(), getInt(stepsTextField), getInt(populationTextField), getDouble(survivalRateTextField));
 
-        Config config = new Config(getMultiplier(), getInt(stepsTextField), getInt(populationTextField), layers);
+            // Go to simulation scene
+            try {
+                // Change Scene
+                Scene scene = startButton.getScene();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Simulation.fxml"));
+                Pane pane = loader.load();
+                scene.setRoot(pane);
 
-        // Go to simulation scene
-        try {
-            // Change Scene
-            Scene scene = startButton.getScene();
-            FXMLLoader loader = new FXMLLoader( getClass().getResource("/Simulation.fxml" ) );
-            Pane pane = loader.load();
-            scene.setRoot(pane);
-
-            // Add config data to controller
-            SimulationController controller = loader.getController();
-            controller.setConfig( config );
-        } catch (IOException e) {
-            e.printStackTrace();
+                // Add config data to controller
+                SimulationController controller = loader.getController();
+                controller.setConfig(config);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void stepsTextFieldHandle(ActionEvent event) {
+    private boolean stepsTextFieldHandle(ActionEvent event) {
+        boolean valid = true;
+
         // lower limit
         if(getInt(stepsTextField) < 10) {
+            valid = false;
             stepsTextField.setText("10");
             Alert minAlert = new Alert(Alert.AlertType.CONFIRMATION, "Minimum value for steps is 10");
             minAlert.showAndWait()
@@ -93,11 +93,15 @@ public class MenuController {
             maxAlert.showAndWait()
                     .filter(response -> response == ButtonType.OK);
         }
+        return valid;
     }
 
-    private void populationTextFieldHandle(ActionEvent event) {
+    private boolean populationTextFieldHandle(ActionEvent event) {
+        boolean valid = true;
+
         // lower limit
         if(getInt(populationTextField) < 10) {
+            valid = false;
             populationTextField.setText("10");
             Alert minAlert = new Alert(Alert.AlertType.CONFIRMATION, "Minimum value for population is 10");
             minAlert.showAndWait()
@@ -105,11 +109,35 @@ public class MenuController {
         }
 
         // upper warning
-        if(getInt(populationTextField) > 10000) {
-            Alert maxAlert = new Alert(Alert.AlertType.CONFIRMATION, "Population values above 10,000 may take too long to complete");
+        if(getInt(populationTextField) > 99000) {
+            Alert maxAlert = new Alert(Alert.AlertType.CONFIRMATION, "Population values above 99,000 may take too long to complete");
             maxAlert.showAndWait()
                     .filter(response -> response == ButtonType.OK);
         }
+        return valid;
+    }
+
+    private boolean survivalRateTextFieldHandle(ActionEvent event) {
+        boolean valid = true;
+
+        // lower limit
+        if(getDouble(survivalRateTextField) < 0.01) {
+            valid = false;
+            survivalRateTextField.setText("0.01");
+            Alert minAlert = new Alert(Alert.AlertType.CONFIRMATION, "Minimum population survival rate is 0.01");
+            minAlert.showAndWait()
+                    .filter(response -> response == ButtonType.OK);
+        }
+
+        // upper warning
+        if(getDouble(survivalRateTextField) > 0.99) {
+            valid = false;
+            survivalRateTextField.setText("0.99");
+            Alert maxAlert = new Alert(Alert.AlertType.CONFIRMATION, "Maximum population survival rate is 0.99");
+            maxAlert.showAndWait()
+                    .filter(response -> response == ButtonType.OK);
+        }
+        return valid;
     }
 
     private float getMultiplier() {
@@ -124,17 +152,20 @@ public class MenuController {
         }
     }
 
-    private void addLayer(ArrayList<Integer> layers, Integer nodes) {
-        if(nodes != 0) {
-            layers.add(nodes);
-        }
-    }
-
     private int getInt(TextField field) {
         int number = 0;
         String text = field.getCharacters().toString();
         if(!text.equals("")) {
             number = Integer.parseInt( text );
+        }
+        return number;
+    }
+
+    private double getDouble(TextField field) {
+        double number = 0.0;
+        String text = field.getCharacters().toString();
+        if(!text.equals("")) {
+            number = Double.parseDouble( text );
         }
         return number;
     }
