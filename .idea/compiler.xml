@@ -16,11 +16,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Hungry Eater" />
+        <module name="Hungry_Eater" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Hungry Eater" target="10" />
+      <module name="Hungry_Eater" target="10" />
     </bytecodeTargetLevel>
   </component>
 </project>

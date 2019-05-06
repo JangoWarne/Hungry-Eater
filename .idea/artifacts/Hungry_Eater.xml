@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Hungry Eater">
+    <output-path>$PROJECT_DIR$/out/artifacts/Hungry_Eater</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="uk.ac.glos.ct5055.assignment.s1609415.Main" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="Hungry_Eater.jar">
+        <element id="module-output" name="Hungry Eater" />
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

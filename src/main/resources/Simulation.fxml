@@ -50,12 +50,12 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="waitingLabel1" layoutX="597.0" layoutY="212.0" text="incorrect data.">
+            <Label layoutX="570.0" layoutY="175.0" text="For indication only">
                <font>
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="waitingLabel2" layoutX="570.0" layoutY="175.0" text="For indication only">
+            <Label layoutX="451.0" layoutY="212.0" text="Use graph below for accurate data.">
                <font>
                   <Font size="30.0" />
                </font>

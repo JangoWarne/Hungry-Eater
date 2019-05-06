@@ -50,6 +50,16 @@
                   <Font size="30.0" />
                </font>
             </Label>
+            <Label layoutX="570.0" layoutY="175.0" text="For indication only">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label layoutX="451.0" layoutY="212.0" text="Use graph below for accurate data.">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <Separator prefWidth="200.0" />
