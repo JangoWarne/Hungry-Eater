@@ -24,14 +24,16 @@ public class Creature {
 
     protected double chooseDirection(double foodAngle, double foodDistance, int foodRadius) {
 
-        //
+        // create network inputs
         MLData inputData = new BasicMLData(5);
+
+        // run network
         ArrayList<Double> visionCones = calculateSight(foodAngle, foodDistance, foodRadius);
 
         for (int i = 0; i < 5; i++) {
             inputData.setData(i, visionCones.get(i));
         }
-
+        
         updateDirection(this.neuralNetwork.compute(inputData).getData(0) * 360);
 
         return getCreatureDirection();

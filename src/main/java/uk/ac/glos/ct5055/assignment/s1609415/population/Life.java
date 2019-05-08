@@ -58,6 +58,7 @@ public class Life implements CalculateScore {
         Pair<Double, Double> foodLocation = food.getFood(foodIndex);
         Pair<Double, Double> creatureLocation = centerCreature();
 
+        // run all creature steps using neural network
         for (int i = 0; i < stepsPerLife; i++) {
 
             nextStep = creature.chooseDirection( foodAngle(creatureLocation, foodLocation), foodDistance(creatureLocation, foodLocation), foodRadius );
@@ -94,11 +95,13 @@ public class Life implements CalculateScore {
         boolean alternate = false;
 
         if (first) {
+            // show creature viewer
             uiReference.drawCreatureLocation( creatureLocation );
             uiReference.drawFoodLocation( foodLocation );
             uiReference.drawSceneVisibility(true);
         }
 
+        // replay all creature steps from stored values
         for (int i = 0; i < steps.size(); i++) {
 
             nextStep = steps.get(i);
@@ -152,6 +155,7 @@ public class Life implements CalculateScore {
     }
 
     private int checkFood( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation, int foodIndex ) {
+        // check if the food circle intersects the creature circle
         if ((creatureRadius + foodRadius) >= foodDistance(creatureLocation, foodLocation)) {
             foodIndex +=1;
         }
@@ -159,6 +163,7 @@ public class Life implements CalculateScore {
     }
 
     private double calculateResult( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation, int foodIndex ) {
+        // get the previous food location
         Pair<Double, Double> lastLocation;
         if (foodIndex > 0) {
             lastLocation = food.getFood(foodIndex - 1);
@@ -166,11 +171,13 @@ public class Life implements CalculateScore {
             lastLocation = new Pair<>(0.0, 0.0);
         }
 
+        // get the distance to the next piece of food from the last piece of food
         double xDistance = Math.abs( lastLocation.getKey() - foodLocation.getKey() );
         double yDistance = Math.abs( lastLocation.getValue() - foodLocation.getValue() );
         double originalDistance = Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
-        double distanceToNext = foodDistance(creatureLocation, foodLocation);
 
+        // get the proportion of the distance that the creature has travelled and coerce to >0
+        double distanceToNext = foodDistance(creatureLocation, foodLocation);
         double proportionToNext;
         if (distanceToNext > originalDistance) {
             proportionToNext = 0;
@@ -182,19 +189,21 @@ public class Life implements CalculateScore {
     }
 
     private static double foodDistance( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation ) {
+        // calculate the absolute distance to the food
         double xDistance = Math.abs( creatureLocation.getKey() - foodLocation.getKey() );
         double yDistance = Math.abs( creatureLocation.getValue() - foodLocation.getValue() );
         return Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) );
     }
 
     private static double foodAngle( Pair<Double, Double> creatureLocation, Pair<Double, Double> foodLocation ) {
+        // calculate the absolute angle of the food compared to the creatures location not the direction it is facing
         double xDistance = Math.abs( creatureLocation.getKey() - foodLocation.getKey() );
         double yDistance = Math.abs( creatureLocation.getValue() - foodLocation.getValue() );
 
         double theta = Math.toDegrees( Math.atan( yDistance/xDistance ) );
         double foodAngle;
 
-        // calculate angle of food from creature between -180 & 180
+        // coerce angle of food from creature between -180 & 180
         if (xDistance > 0) {
             if (yDistance > 0) {
                 // first quadrant
@@ -227,6 +236,7 @@ public class Life implements CalculateScore {
     }
 
     private Pair<Double, Double> centerCreature() {
+        // returns the pixel location for the center of the viewer
         return new Pair<>( (double)((screenXMax-screenXMin)/2 + screenXMin), (double)((screenYMax-screenYMin)/2 + screenYMin) );
     }
 

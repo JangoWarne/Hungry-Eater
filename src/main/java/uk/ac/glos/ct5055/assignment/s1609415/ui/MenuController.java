@@ -141,6 +141,8 @@ public class MenuController {
     }
 
     private float getMultiplier() {
+        // get value for scale multiplier button selected
+
         int index = scaleToggleGroup.getToggles().indexOf( scaleToggleGroup.getSelectedToggle() );
 
         switch (index) {

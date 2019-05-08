@@ -16,16 +16,16 @@ public class GenerationResult {
     private Pair<Double, ArrayList<Double>> bestCreature;
 
     /**
-     * Stores the best Creature from the generation
-     * @param bestCreature This is the Creature of the most effective creature in the generation
+     * Stores the best creatures information from the generation
+     * @param bestCreature This is the score for and the steps the creature made
      */
     public void setBestCreature(Pair<Double, ArrayList<Double>> bestCreature) {
         this.bestCreature = bestCreature;
     }
 
     /**
-     * Returns the best Creature from the generation
-     * @return This is the creature of the most effective creature in the generation
+     * Returns the best creatures information from the generation
+     * @return This is the score for and the steps the creature made
      */
     public Pair<Double, ArrayList<Double>> getBestCreature() {
         return bestCreature;

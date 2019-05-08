@@ -2,7 +2,6 @@ package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
 import javafx.application.Platform;
 import javafx.util.Pair;
-import uk.ac.glos.ct5055.assignment.s1609415.population.Creature;
 import uk.ac.glos.ct5055.assignment.s1609415.population.Food;
 import uk.ac.glos.ct5055.assignment.s1609415.population.GenerationResult;
 
@@ -30,6 +29,7 @@ public class Progress {
     /**
      * Initialises the values for the object;
      * @param uiReference This is a reference to the SimulationController UI
+     * @param populationSize This is the number of creatures in each generation
      */
     public Progress( SimulationController uiReference, int populationSize ) {
         this.uiReference = uiReference;
@@ -54,7 +54,7 @@ public class Progress {
 
     /**
      * Returns the last completed generation
-     * @return This contains most recent completed generation
+     * @return This is the number for the most recent completed generation
      */
     public int getGeneration() {
 
@@ -68,6 +68,7 @@ public class Progress {
      * Increments the number of the current generation
      * Resets progress for generation
      * Updates values in UI
+     * @param food This is the location for the food used in the generation
      */
     public void incrementGeneration( Food food ) {
 
@@ -115,6 +116,7 @@ public class Progress {
     /**
      * Increments progress for current generation
      * Updates value in UI
+     * @param creature This a Pair containg the score for the creature and the moves it made
      */
     public void incrementProgress( Pair<Double, ArrayList<Double>> creature) {
 

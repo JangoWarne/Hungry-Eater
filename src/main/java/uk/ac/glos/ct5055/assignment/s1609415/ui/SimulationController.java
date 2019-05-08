@@ -1,7 +1,5 @@
 package uk.ac.glos.ct5055.assignment.s1609415.ui;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import uk.ac.glos.ct5055.assignment.s1609415.population.Simulation;
 
 import javafx.fxml.FXML;
@@ -21,7 +19,7 @@ import java.io.IOException;
 /**
  * This class is the controller for Simulation.fxml
  * it sets the handles for UI events/actions
- * it loads the Results.fxml scene if user selects to stop the simulation
+ * it loads the Menu.fxml scene if user selects to stop the simulation
  *
  * @author  Joshua Walker
  * @version 1.0
@@ -54,9 +52,10 @@ public class SimulationController {
 
     @FXML
     private void initialize() {
-        // Handle Button event.
+        // Handle Button events
         stopRegion.setOnMouseClicked(this::backRegionHandle);
 
+        // reset chart
         genBest = new XYChart.Series<>();
         genMean = new XYChart.Series<>();
 
@@ -69,6 +68,7 @@ public class SimulationController {
     }
 
     protected void setConfig( Config config ) {
+        // This is used by Menu to transfer configuration values
         drawPopulationSize(config.getPopulationSize());
 
         creatureCircle.setLayoutX(0);
@@ -104,6 +104,7 @@ public class SimulationController {
     }
 
     public void drawSceneVisibility(boolean visible) {
+        // show/hide creature viewer
         creatureCircle.setVisible(visible);
         foodCircle.setVisible(visible);
 

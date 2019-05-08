@@ -23,6 +23,7 @@ public class Food implements Cloneable {
     private long ySeed;
 
     public Food(Config config) {
+        // create random numbers from a new deterministic seed so that the object can be cloned
         this.config = config;
         Random rand = new Random();
         this.xSeed = rand.nextLong();
@@ -34,6 +35,7 @@ public class Food implements Cloneable {
     }
 
     public Food(Config config, long xSeed, long ySeed) {
+        // create random numbers from a previous deterministic seed when cloning
         this.config = config;
         this.xSeed = xSeed;
         this.ySeed = ySeed;
@@ -47,6 +49,7 @@ public class Food implements Cloneable {
 
         synchronized (lockFood) {
 
+            // generate missing food locations
             while (locations.size() < index+1) {
                 addLocation();
             }
@@ -56,6 +59,7 @@ public class Food implements Cloneable {
     }
 
     private void addLocation() {
+        // calculate next food location
         Double xPos = (this.xPositions.nextDouble() * (config.getScreenXMax() - config.getScreenXMin())) + config.getScreenXMin();
         Double yPos = (this.yPositions.nextDouble() * (config.getScreenYMax() - config.getScreenYMin())) + config.getScreenYMin();
 

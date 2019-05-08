@@ -1,6 +1,5 @@
 package uk.ac.glos.ct5055.assignment.s1609415.population;
 
-import org.encog.engine.network.activation.ActivationFunction;
 import org.encog.ml.ea.train.EvolutionaryAlgorithm;
 import org.encog.neural.neat.NEATPopulation;
 import org.encog.neural.neat.NEATUtil;
@@ -9,7 +8,7 @@ import uk.ac.glos.ct5055.assignment.s1609415.ui.Config;
 import uk.ac.glos.ct5055.assignment.s1609415.ui.Progress;
 
 /**
- * This class processes a generation of creatures
+ * This class processes each generation of creatures
  *
  * @author  Joshua Walker
  * @version 1.0
@@ -32,6 +31,7 @@ public class Population {
         EvolutionaryAlgorithm train = newPopulation();
 
         while (status.getRunStatus()) {
+            // run next generation
             train.iteration();
             progress.incrementGeneration( food );
 
@@ -47,6 +47,8 @@ public class Population {
     }
 
     private EvolutionaryAlgorithm newPopulation() {
+        // configure NEAT algorithm
+
         NEATPopulation population = new NEATPopulation( 5, 1, config.getPopulationSize() );
         population.setSurvivalRate( config.getSurvivalRate() );
         //population.setActivationCycles(1);

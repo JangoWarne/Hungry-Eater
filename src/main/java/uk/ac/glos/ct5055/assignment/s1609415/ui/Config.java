@@ -25,6 +25,7 @@ public class Config {
      * @param sizeMultiplier This is used to scale the creature and food from their default sizes
      * @param stepsPerLife This is the number of steps each creature can take in a life
      * @param populationSize This is the number of creatures in the population every generation
+     * @param survivalRate This is fraction of creatures that will survive each generation
      */
     public Config( float sizeMultiplier, int stepsPerLife, int populationSize, double survivalRate) {
 
@@ -88,22 +89,42 @@ public class Config {
         return populationSize;
     }
 
+    /**
+     * Returns the survival rate fraction of creatures each generation
+     * @return This is the survival rate
+     */
     public double getSurvivalRate() {
         return survivalRate;
     }
 
+    /**
+     * Returns the creature viewer screen maxY value
+     * @return This maximum Y pixel value
+     */
     public int getScreenYMax() {
         return screenYMax;
     }
 
+    /**
+     * Returns the creature viewer screen minY value
+     * @return This minimum Y pixel value
+     */
     public int getScreenYMin() {
         return screenYMin;
     }
 
+    /**
+     * Returns the creature viewer screen maxX value
+     * @return This maximum X pixel value
+     */
     public int getScreenXMax() {
         return screenXMax;
     }
 
+    /**
+     * Returns the creature viewer screen minX value
+     * @return This minimum X pixel value
+     */
     public int getScreenXMin() {
         return screenXMin;
     }
